@@ -16,17 +16,17 @@ for n = 23:num_patient
     original_out = out.pt_out;
 
     %% RUN SINGLE OUT FILE 
-    new_out = AA_alternative_filtering(original_out);
-    new_out = AA_Running_RejectOrKeep_RW(new_out);
-    new_out = AA_new_build_network(new_out); 
-    new_out = AA_require_both_Ns(new_out);
+    new_out = RW_alternative_filtering(original_out);
+    new_out = RW_Running_RejectOrKeep(new_out);
+    new_out = RW_new_build_network(new_out); 
+    new_out = RW_require_both_Ns(new_out);
 
     % if there is any error in this step (keeps not sufficient to build the
     % figure), display error and continue
     try
-        AA_random_rejections_keeps(new_out);
+        RW_random_rejections_keeps(new_out);
     catch ME
-        fprintf('Error in AA_random_rejections_keeps for patient %s: %s\n', patient_files(n), ME.message);
+        fprintf('Error in random_rejections_keeps for patient %s: %s\n', patient_files(n), ME.message);
     end
 
     

@@ -4,7 +4,7 @@
 % Total time duration is -0.5 + 0.8 = 1.3 secs
 % Number of samples recorded during this time window = 1.3 sec * 1024 Hz =
 % 1332, which can be seen in size(out.elecs(ich).avg and detrend_filt_avgs)
-function out = AA_new_build_network(out,do_gui) 
+function out = RW_new_build_network(out,do_gui) 
 
 if ~exist('do_gui','var'), do_gui = 0; end
 

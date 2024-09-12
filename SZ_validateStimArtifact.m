@@ -33,10 +33,10 @@ for n = 44:num_patient
     original_out = out.pt_out;
 
     %% RUN SINGLE OUT FILE 
-    new_out = AA_alternative_filtering(original_out);
-    new_out = AA_Running_RejectOrKeep_RW(new_out);
-    new_out = AA_new_build_network(new_out); 
-    new_out = AA_require_both_Ns(new_out);
+    new_out = RW_alternative_filtering(original_out);
+    new_out = RW_Running_RejectOrKeep(new_out);
+    new_out = RW_new_build_network(new_out); 
+    new_out = RW_require_both_Ns(new_out);
 
     % Save the patient output file
     out_file_name = patient_files(n);
@@ -45,9 +45,9 @@ for n = 44:num_patient
     % if there is any error in this step (keeps not sufficient to build the
     % figure), display error and continue
     try
-        AA_random_rejections_keeps(new_out);
+        RW_random_rejections_keeps(new_out);
     catch ME
-        fprintf('Error in AA_random_rejections_keeps for patient %s: %s\n', patient_files(n), ME.message);
+        fprintf('Error in random_rejections_keeps for patient %s: %s\n', patient_files(n), ME.message);
     end
 end
 
@@ -55,7 +55,7 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % comparison between avg and detrend_filt_avg after
-% AA_alternative_filtering
+% alternative_filtering
 num_patient = 19;
 row = 133;
 col = 50;
@@ -66,7 +66,7 @@ for n = 19:num_patient
     out = out.pt_out;
 
     %% RUN SINGLE OUT FILE 
-    out = AA_alternative_filtering(out);
+    out = RW_alternative_filtering(out);
     stim_idx = out.elecs(row).stim_idx;
     if out.elecs(row).N1(col,2) > 0
         ori_n1_idx = out.elecs(row).N1(col,2)+stim_idx;
@@ -75,7 +75,7 @@ for n = 19:num_patient
     else
         ori_n1_idx = 0;
     end
-    out = AA_Running_RejectOrKeep_RW(out);
+    out = RW_Running_RejectOrKeep_RW(out);
     n1_idx = out.elecs(row).N1(col,2)+stim_idx;
     n1_x = convert_indices_to_times(n1_idx, out.other.stim.fs, -0.5);
     n1_y = out.elecs(row).detrend_filt_avgs(n1_idx,col);

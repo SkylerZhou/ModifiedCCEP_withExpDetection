@@ -1,6 +1,6 @@
 % implements an additional constriant where both N1 and N2 components of
 % the CCEPs must be present and valid for a signal to be kept. 
-function out = AA_require_both_Ns(out)
+function out = RW_require_both_Ns(out)
 
 NumRows = size(out.rejection_details(1).reject.keep,1);
 NumColumns = size(out.rejection_details(1).reject.keep,2);

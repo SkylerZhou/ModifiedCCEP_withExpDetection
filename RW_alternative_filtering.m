@@ -1,5 +1,5 @@
 % Filters Signal (interpolation, 60 hz noise filter, generates derivative matrix for rejection) 
-function out = AA_alternative_filtering(out)
+function out = RW_alternative_filtering(out)
 
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

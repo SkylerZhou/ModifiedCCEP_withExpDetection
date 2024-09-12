@@ -1,7 +1,7 @@
 % Further processes the data by running a rejection or keep analysis. 
 % It examines the filtered data for artifact signals or low-quality
 % data points and made a decision on keep or reject.
-function out = AA_Running_RejectOrKeep_RW(out)
+function out = RW_Running_RejectOrKeep(out)
 
 %% Parameters
 idx_before_stim = 30;
