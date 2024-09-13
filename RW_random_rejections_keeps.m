@@ -1,4 +1,4 @@
-function AA_random_rejections_keeps(out)
+function RW_random_rejections_keeps(out)
 
 %% Parameters
 pretty = 0;
@@ -41,15 +41,14 @@ pre_thresh = out.rejection_details(which_n).reject.pre_thresh;
 at_thresh = out.rejection_details(which_n).reject.at_thresh;
 no_both = out.rejection_details(which_n).reject.no_both;
 keep = out.rejection_details(which_n).reject.keep;
-%deriv = out.rejection_details(which_n).reject.deriv;
 exp = out.rejection_details(which_n).reject.exp;
 
 any_reject = sig_avg == 1| pre_thresh == 1 | at_thresh == 1 | no_both == 1 | exp ==1 ;
 
 % Calculate total numbers
-nkeep = sum(keep(:) == 1)
-nreject = sum(any_reject(:) == 1)
-nunstim = sum(isnan(keep(:)))
+nkeep = sum(keep(:) == 1);
+nreject = sum(any_reject(:) == 1);
+nunstim = sum(isnan(keep(:)));
 
 % if nunstim+nreject+nkeep ~= size(keep,1)*size(keep,1)
 %      error('numbers do not add up');
