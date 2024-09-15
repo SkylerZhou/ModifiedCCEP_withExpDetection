@@ -4,11 +4,11 @@ patient_files = string(strcat(ptT.HUPID, '.mat'));
 patient_idx = 40;
 which_n = 1;
 
-ori_patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'new_pipeline', patient_files(patient_idx));
+ori_patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'ori_pipeline', patient_files(patient_idx));
 temp = load(ori_patient_file);
 ori_out = temp.pt_out;
     
-new_patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'modified_pipeline', patient_files(patient_idx));
+new_patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'new_pipeline', patient_files(patient_idx));
 temp = load(new_patient_file);
 new_out = temp.new_out;
 

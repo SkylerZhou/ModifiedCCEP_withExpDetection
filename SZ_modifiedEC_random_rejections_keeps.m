@@ -24,7 +24,6 @@ if isempty(locations.ieeg_folder) == 0
 end
 
 
-
 % load ori_out 
 ptT = readtable(['/Users/zhouzican/Documents/MATLAB/toolboxs/CCEP/pt_mat/','master_pt_list.xlsx']);
 patient_files = string(strcat(ptT.HUPID, '.mat'));    
@@ -32,7 +31,7 @@ start_patient = 40;
 num_patient = 40;
 
 for n = start_patient:num_patient
-    patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'new_pipeline', patient_files(n));
+    patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'ori_pipeline', patient_files(n));
     temp = load(patient_file);
     ori_out = temp.pt_out;
 
@@ -246,7 +245,8 @@ for n = start_patient:num_patient
         
         % Save the figure
         name = ori_out.name;
-        out_folder = [results_folder,'validation/',name,'/'];
+        out_folder = [results_folder,'ori_validation/',name,'/'];
+        
         if ~exist(out_folder,'dir')
             mkdir(out_folder)
         end

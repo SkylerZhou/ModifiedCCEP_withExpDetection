@@ -5,7 +5,7 @@ overwrite = 1;
 locations = cceps_files;
 data_folder = locations.data_folder;
 results_folder = locations.results_folder;
-out_folder = [results_folder,'modified_pipeline/'];
+out_folder = [results_folder,'new_pipeline/'];
 
 pwfile = locations.pwfile;
 login_name = locations.loginname;
@@ -33,7 +33,7 @@ ptT = readtable(['/Users/zhouzican/Documents/MATLAB/toolboxs/CCEP/pt_mat/','mast
 patient_files = string(strcat(ptT.HUPID, '.mat'));
 
 for n = start_patient:num_patient
-    patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'new_pipeline', patient_files(n));
+    patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'ori_pipeline', patient_files(n));
     out = load(patient_file);
     ori_out = out.pt_out;
 
@@ -76,11 +76,11 @@ which_n = 1;
 for n = start_patient:num_patient
 
     % load the mat files outputed by running the two versions of codes
-    ori_patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'new_pipeline', patient_files(n));
+    ori_patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'ori_pipeline', patient_files(n));
     temp = load(ori_patient_file);
     ori_out = temp.pt_out;
 
-    new_patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'modified_pipeline', patient_files(n));
+    new_patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'new_pipeline', patient_files(n));
     temp = load(new_patient_file);
     new_out = temp.new_out;
  
