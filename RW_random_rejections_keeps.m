@@ -295,6 +295,7 @@ for j = 1:2
     else
         fname = sprintf('%s_%sthresh_%d.png',cat,which,thresh);
     end
+    
     print(gcf,[out_folder,fname],'-dpng');
     
 end
