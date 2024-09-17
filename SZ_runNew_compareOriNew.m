@@ -27,8 +27,8 @@ end
 
 
 %% loop over patients
-start_patient = 45;
-num_patient = 45;
+start_patient = 1;
+num_patient = 55;
 ptT = readtable(['/Users/zhouzican/Documents/MATLAB/toolboxs/CCEP/pt_mat/','master_pt_list.xlsx']);
 patient_files = string(strcat(ptT.HUPID, '.mat'));
 
@@ -62,15 +62,15 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% total number of keeps remained after running original and new algorithms
 % initialize arrays to store 
-arr_patients = cell(52, 1);
-arr_sum_keep_ori = zeros(52, 1);
-arr_sum_keep_new = zeros(52, 1);
-arr_total = zeros(52, 1);
+arr_patients = cell(55, 1);
+arr_sum_keep_ori = zeros(55, 1);
+arr_sum_keep_new = zeros(55, 1);
+arr_total = zeros(55, 1);
 
 
 %% loop over to retrieve patient's data
-start_patient = 44;
-num_patient = 44;
+start_patient = 1;
+num_patient = 55;
 which_n = 1;
 
 for n = start_patient:num_patient
@@ -142,6 +142,9 @@ writetable(compare_table, 'Compare_Total_Keep.xlsx')
 %% randomly select 20 out of all 52 patients' data for validation
 random_select = 20;
 filter_table = compare_table(compare_table.New_Total_Keep >= 25 & ...
-                               ~strcmp(compare_table.HUPID, 'HUP216'), :);
+                               ~strcmp(compare_table.HUPID, 'HUP214') &...
+                               ~strcmp(compare_table.HUPID, 'HUP216') &...
+                               ~strcmp(compare_table.HUPID, 'HUP272') &...
+                               ~strcmp(compare_table.HUPID, 'HUP273'), :);
 random_indices = randperm(height(filter_table), random_select);
 select_patients = filter_table.HUPID(random_indices);

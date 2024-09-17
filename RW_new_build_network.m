@@ -36,8 +36,8 @@ keep_chs = get_chs_to_ignore(chLabels);
 % skyler's code: add in goodness of fit in out.elecs
 
 % coef range for the fitted exponential function
-aLower = -10;
-aUpper = 10;
+aLower = -5;
+aUpper = 5;
 bLower = -30;
 bUpper = 0;
 

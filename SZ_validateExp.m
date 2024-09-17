@@ -1,7 +1,7 @@
 % load ori_out and new_out
 ptT = readtable(['/Users/zhouzican/Documents/MATLAB/toolboxs/CCEP/pt_mat/','master_pt_list.xlsx']);
 patient_files = string(strcat(ptT.HUPID, '.mat'));
-patient_idx = 45;
+patient_idx = 32;
 which_n = 1;
 
 ori_patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'ori_pipeline', patient_files(patient_idx));
@@ -13,13 +13,25 @@ temp = load(new_patient_file);
 new_out = temp.new_out;
 
 % get rejection info
+% rejection_details of ori
 sig_avg_ori = ori_out.rejection_details(which_n).reject.sig_avg;
 pre_thresh_ori = ori_out.rejection_details(which_n).reject.pre_thresh;
 at_thresh_ori = ori_out.rejection_details(which_n).reject.at_thresh;
-
 any_reject_ori = sig_avg_ori == 1 | pre_thresh_ori == 1 | at_thresh_ori == 1;
-exp_new = new_out.rejection_details(which_n).reject.exp;
- 
+
+% rejection_details of new
+exp_new = new_out.rejection_details(which_n).reject.exp; 
+sig_avg_new = new_out.rejection_details(which_n).reject.sig_avg;
+pre_thresh_new = new_out.rejection_details(which_n).reject.pre_thresh;
+at_thresh_new = new_out.rejection_details(which_n).reject.at_thresh;
+no_both_new = new_out.rejection_details(which_n).reject.no_both;
+any_reject_new = sig_avg_new == 1 | pre_thresh_new == 1 | at_thresh_new == 1 | no_both_new == 1;
+
+% how many are rejected just by exp in new?
+exp_reject = (exp_new == 1); 
+fprintf("%d signal are rejected only by exp in the new validation.\n", size(find(exp_reject & ~any_reject_new),1))
+fprintf("%d signal are rejected only by exp but not rejected by the ori validation.\n", size(find(exp_reject & ~any_reject_ori),1))
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% For those rejected by 'exp', randomly select and plot 25 figures
@@ -31,12 +43,11 @@ zoom_times = [-300e-3 300e-3];
 peak_end_time = 0.3;
 aLower = -5;
 aUpper = 5;
-bLower = -50;
+bLower = -30;
 bUpper = 0;
 
 % Find row and col for waves that were only rejected due to 'exp' in
 % 'new_out' but not rejected in 'original_out'
-exp_reject = (exp_new == 1); 
 %[row, col] = find(exp_reject);
 [row, col] = find(exp_reject & ~any_reject_ori);
 
