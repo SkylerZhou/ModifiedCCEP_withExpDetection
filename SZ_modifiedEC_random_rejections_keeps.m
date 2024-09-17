@@ -27,8 +27,8 @@ end
 % load ori_out 
 ptT = readtable(['/Users/zhouzican/Documents/MATLAB/toolboxs/CCEP/pt_mat/','master_pt_list.xlsx']);
 patient_files = string(strcat(ptT.HUPID, '.mat'));    
-start_patient = 40;
-num_patient = 40;
+start_patient = 1;
+num_patient = 55;
 
 for n = start_patient:num_patient
     patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'ori_pipeline', patient_files(n));
@@ -127,13 +127,17 @@ for n = start_patient:num_patient
             n1_idx = floor(n1_time * ori_out.other.stim.fs); % the range of idx that N1 is at assuming start time = 0
             temp_n1_idx = n1_idx + stim_idx - 1; % the range of idx that N1 is at assuming start time = -0.5
             
+
+            % plot the keeps 
             if j==1
                 if ~isnan(ori_out.elecs(row).N1(col,1))
-                    % Plot
+                    % Plot the avg 
                     nexttile
                     plot(eeg_times,avg,'k','linewidth',2);
                     hold on
                     
+
+                    % annotate N1 location and z-score
                     if (ori_out.elecs(row).N1(col,1))~=0
                         x = (ori_out.elecs(row).N1(col,2) / ori_out.other.stim.fs);
                         x_indx = round(ori_out.elecs(row).N1(col,2) + stim_idx + 1);
@@ -146,6 +150,8 @@ for n = start_patient:num_patient
                         end
                     end
             
+
+                    % set xlim and ylim
                     xlim([zoom_times(1) zoom_times(2)]);
                     
                     % Zoom in (in the y-dimension) around the maximal point in the N1
@@ -156,6 +162,8 @@ for n = start_patient:num_patient
                     end
                     
                     
+                    % annotate stim and response channel, as well as
+                    % stim_start time
                     labels = ori_out.bipolar_labels;
                     stim_label = labels{row};
                     resp_label = labels{col};  
@@ -180,14 +188,17 @@ for n = start_patient:num_patient
             end
             
             
+
+            % plot rejects 
             if j == 2
                 %if ~isnan(out.elecs(row).N1(col,1))
                     % Plot
                     nexttile
                     plot(eeg_times,avg,'k','linewidth',2);
-                    
                     hold on
                     
+
+                    % plot N1 location and z-score 
                     if (ori_out.elecs(row).N1(col,1))~=0 && ~isnan(ori_out.elecs(row).N1(col,1))
                         x = (ori_out.elecs(row).N1(col,2) / ori_out.other.stim.fs);
                         x_indx = round(ori_out.elecs(row).N1(col,2) + stim_idx + 1);
@@ -200,7 +211,8 @@ for n = start_patient:num_patient
                         end
                     end
                     
-            
+                    
+                    % set xlim and ylim
                     xlim([zoom_times(1) zoom_times(2)]);
                     
                     % Zoom in (in the y-dimension) around the maximal point in the N1
@@ -211,6 +223,8 @@ for n = start_patient:num_patient
                     end
                     
                     
+                    % annoatate stim and response channel, as well as
+                    % stim_start
                     labels = ori_out.bipolar_labels;
                     stim_label = labels{row};
                     resp_label = labels{col};
@@ -218,7 +232,6 @@ for n = start_patient:num_patient
                     pause(0.1)
                     xl = xlim;
                     yl = ylim;
-
                     if ~pretty
                         text(xl(1),yl(2),sprintf('Stim: %s\nResponse: %s\nStart: %.2f s',stim_label,resp_label,stim_start),...
                             'horizontalalignment','left',...
@@ -239,11 +252,14 @@ for n = start_patient:num_patient
             end
         end
         
+
+
+        
+        % Save the figure
         if pretty == 0
             title(t,sprintf('%s %s z-score threshold %1.1f',cat,which,thresh));
         end
         
-        % Save the figure
         name = ori_out.name;
         out_folder = [results_folder,'ori_validation/',name,'/'];
         

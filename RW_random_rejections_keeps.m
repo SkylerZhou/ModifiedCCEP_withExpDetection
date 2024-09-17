@@ -30,7 +30,7 @@ if ~exist(out_folder,'dir')
 end
 
 %% Pick intracranial chs with bipolar signal
-keep_chs = get_chs_to_ignore(out.bipolar_labels);
+keep_chs = get_chs_to_ignore(out.bipolar_labels); % get_chs_to_ignore removes bad chs
 
 %% Get rejection details arrays
 thresh = out.rejection_details(which_n).thresh;
@@ -67,8 +67,8 @@ for j = 1:2
     meet_criteria = find(thing==1);
 
     % Restrict to those on keep chs
-    [row,col] = ind2sub(size(keep),meet_criteria);  % obtain the matrix (electrode pairs) locations of all the keeps and rejects  
-    meet_criteria(keep_chs(row) == false) = [];
+    [row,col] = ind2sub(size(keep),meet_criteria);  % obtain the linear indices of all the keeps 
+    meet_criteria(keep_chs(row) == false) = []; % filter out the keeps that are recorded with the bad channels(not sure)
     col(keep_chs(row) == false) = [];
     meet_criteria(keep_chs(col) == false) = [];
     
@@ -94,7 +94,7 @@ for j = 1:2
         
         % get why it was rejected
         why = nan;
-        if j == 2
+        if j == 2 
             if sig_avg(row,col) == 1
                 why = 'averaging';
             end
@@ -146,13 +146,15 @@ for j = 1:2
         temp_n1_idx = n1_idx + stim_idx - 1;
         temp_n2_idx = n2_idx + stim_idx - 1;
         
+        % plot the keeps 
         if j==1
             if ~isnan(out.elecs(row).N1(col,1))
-                % Plot
+                % Plot the detrend_filt_avgs
                 nexttile
                 plot(eeg_times,avg,'k','linewidth',2);
                 hold on
                 
+                % annotate N1 location and z-score 
                 if (out.elecs(row).N1(col,1))~=0
                     x = (out.elecs(row).N1(col,2)/out.other.stim.fs);
                     x_indx = round(out.elecs(row).N1(col,2)+stim_idx+1);
@@ -164,6 +166,8 @@ for j = 1:2
                     end
                 end
                 hold on
+                
+                % annotate N2 location
                 if ~isnan(out.elecs(row).N2(col,2))
                     x = (out.elecs(row).N2(col,2)/out.other.stim.fs);
                     x_indx = out.elecs(row).N2(col,2)+stim_idx+1;
@@ -181,7 +185,8 @@ for j = 1:2
                     ylim([median(avg)-zoom_factor*height,median(avg)+zoom_factor*height]);
                 end
                 
-                
+                % annoatate stim and response electrodes, as well as stim
+                % start time 
                 labels = out.bipolar_labels;
                 stim_label = labels{row};
                 resp_label = labels{col};  
@@ -206,13 +211,18 @@ for j = 1:2
                 end
             end
         end
+
+
+
+        % plot the rejects
         if j == 2
             %if ~isnan(out.elecs(row).N1(col,1))
-                % Plot
+                % Plot the detrend_filt_avg
                 nexttile
                 plot(eeg_times,avg,'k','linewidth',2);
                 hold on
                 
+                % annoatate N1 location and z-score
                 if (out.elecs(row).N1(col,1))~=0 && ~isnan(out.elecs(row).N1(col,1))
                     x = (out.elecs(row).N1(col,2)/out.other.stim.fs);
                     x_indx = round(out.elecs(row).N1(col,2)+stim_idx+1);
@@ -224,6 +234,8 @@ for j = 1:2
                     end
                 end
                 hold on
+
+                % annotate N2 location
                 if ~isnan(out.elecs(row).N2(col,2))
                     x = (out.elecs(row).N2(col,2)/out.other.stim.fs);
                     x_indx = out.elecs(row).N2(col,2)+stim_idx+1
@@ -231,6 +243,7 @@ for j = 1:2
                     plot(x,y,'rX','markersize',15,'linewidth',4);
                 end
         
+                % set xlim and ylim
                 %xlim([eeg_times(1) eeg_times(end)])
                 xlim([zoom_times(1) zoom_times(2)]);
                 
@@ -241,7 +254,9 @@ for j = 1:2
                     ylim([median(avg)-zoom_factor*height,median(avg)+zoom_factor*height]);
                 end
                 
-                
+
+                % annotate stim and response electroes, as well as
+                % stim_start time 
                 labels = out.bipolar_labels;
                 stim_label = labels{row};
                 resp_label = labels{col};
@@ -269,18 +284,17 @@ for j = 1:2
         end
     end
     
+
+    % save the figures 
     if pretty == 0
         title(t,sprintf('%s %s z-score threshold %1.1f',cat,which,thresh));
     end
     
-    % Save the figure
     if pretty
         fname = sprintf('%s_%sthresh_%d_pretty.png',cat,which,thresh);
     else
         fname = sprintf('%s_%sthresh_%d.png',cat,which,thresh);
     end
     print(gcf,[out_folder,fname],'-dpng');
-    
-
     
 end

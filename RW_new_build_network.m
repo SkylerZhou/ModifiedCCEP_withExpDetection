@@ -35,6 +35,12 @@ keep_chs = get_chs_to_ignore(chLabels);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % skyler's code: add in goodness of fit in out.elecs
 
+% coef range for the fitted exponential function
+aLower = -10;
+aUpper = 10;
+bLower = -30;
+bUpper = 0;
+
 % Pre-allocate the gof matrix with nan
 for row = 1:nchs
     if size(out.elecs(row).avg, 1) >= 1
@@ -56,11 +62,26 @@ for row=1:nchs
                 eeg_times = convert_indices_to_times(peak_start_index:peak_end_index,out.other.stim.fs,times(1));
                 after_peak_avg = out.elecs(row).detrend_filt_avgs(peak_start_index:peak_end_index,col); 
                 
+                % standarize the after_peak_avg between [-1,1]
+                mean_val = mean(after_peak_avg);
+                std_val = std(after_peak_avg);
+                if std_val ~= 0
+                    after_peak_avg_std = (after_peak_avg - mean_val) / std_val;
+                else
+                    after_peak_avg_std = zeros(size(after_peak_avg)); % Handle constant signal
+                end
+
+                % Define cutoff frequency and filter parameters
+                cutoff_freq = 50;  
+                Fs = 2 * out.other.stim.fs;
+                [b, a] = butter(4, cutoff_freq/(Fs/2), 'low');  % Fs is the sampling frequency
+                after_peak_avg_std = filtfilt(b, a, after_peak_avg_std);
+
                 % examine goodness of fit 
                 fitOptions = fitoptions('Method', 'NonlinearLeastSquares', ...
-                        'Lower', [-2000, -50], ...
-                        'Upper', [2000, 0]);
-                [f, gof] = fit(eeg_times',after_peak_avg(:),'exp1', fitOptions);
+                        'Lower', [aLower, bLower], ...
+                        'Upper', [aUpper, bUpper]);
+                [f, gof] = fit(eeg_times',after_peak_avg_std(:),'exp1', fitOptions);
                 out.elecs(row).gof(:,col) = gof.adjrsquare;
             end
         end

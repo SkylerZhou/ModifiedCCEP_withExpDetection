@@ -27,8 +27,8 @@ end
 
 
 %% loop over patients
-start_patient = 40;
-num_patient = 40;
+start_patient = 45;
+num_patient = 45;
 ptT = readtable(['/Users/zhouzican/Documents/MATLAB/toolboxs/CCEP/pt_mat/','master_pt_list.xlsx']);
 patient_files = string(strcat(ptT.HUPID, '.mat'));
 
@@ -69,8 +69,8 @@ arr_total = zeros(52, 1);
 
 
 %% loop over to retrieve patient's data
-start_patient = 40;
-num_patient = 40;
+start_patient = 44;
+num_patient = 44;
 which_n = 1;
 
 for n = start_patient:num_patient
