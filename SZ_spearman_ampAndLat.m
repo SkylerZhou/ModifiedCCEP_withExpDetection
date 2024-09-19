@@ -190,6 +190,95 @@ hold off;
 
 
 
+
+%% correlation at patient level. 
+% obtain patient out file 
+num_patient = 20;
+ptT = readtable(['/Users/zhouzican/Documents/MATLAB/toolboxs/CCEP/pt_mat/','master_pt_list.xlsx']);
+patient_files = string(strcat(ptT.HUPID, '.mat'));
+patient_ids = string(ptT.HUPID(num_patient));
+
+
+for n = 1:num_patient
+    
+    which_version = 'new_pipeline';
+    
+    % obtain patient file 
+    patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', which_version, patient_files(n));
+    temp = load(patient_file);
+    if strcmp(which_version, 'new_pipeline')
+        out = temp.new_out;
+    else
+        out = temp.pt_out;
+    end
+
+
+    % to store amp and lat across all electrodes for each patient 
+    %n1_ampLat_oneElecs = []; % To store N1 amp and lat pairs for each stimulating electrode
+    %n2_ampLat_oneElecs = []; % To store N2 amp and lat pairs ..
+    num_elecs = size(out.elecs, 2);
+    n1_ampLat_all = []; % To store N1 amp and lat pairs for all the stimulating electrode
+    n2_ampLat_all = []; % To store N2 amp and lat pairs ..
+
+    
+    for ich = 1:num_elecs
+        if isempty(out.elecs(ich).arts), continue; end
+        
+        % 1.0 extract n1 amplitude and latency for all of the responding
+        % electrodes of the ich-th stimulating electrode --> size =
+        % num_elecs * 2
+        n1_ampLat = out.elecs(ich).N1(:,1:2);
+        
+        % 1.1 replace the 0s with NaN in the new_version of N1 amp and latencies
+        if strcmp(which_version, 'new_pipeline')
+            for jch = 1:num_elecs
+                if n1_ampLat(jch,1) == 0 && n1_ampLat(jch,2) == 0
+                    n1_ampLat(jch,1) = NaN;
+                    n1_ampLat(jch,2) = NaN;
+                end
+            end
+        end
+
+        % 1.2 exclude the n1_ampLat if the stim_resp are rejected 
+        % get the keep for the current stimulating electrode
+        keep_vector = out.rejection_details(1).reject.keep(ich,:);
+        % identify indices where keep_vector is NaN or 0
+        invalid_indices = isnan(keep_vector) | (keep_vector == 0);
+        % replace corresponding elements in n1_amp and n1_lat with NaN
+        n1_ampLat(invalid_indices) = NaN;
+        
+        % 1.3 store the processed n1_ampLat 
+        n1_ampLat = transpose(n1_ampLat);
+        n1_ampLat_all = [n1_ampLat_all, n1_ampLat];
+
+        % 2.0 extract n1 amplitude and latency 
+        n2_ampLat = out.elecs(ich).N2(:,1:2);
+        
+        % 2.1 replace the 0s with NaN in the new_version of N1 amp and latencies
+        if strcmp(which_version, 'new_pipeline')
+            for jch = 1:num_elecs
+                if n2_ampLat(jch,1) == 0 && n2_ampLat(jch,2) == 0
+                    n2_ampLat(jch,1) = NaN;
+                    n2_ampLat(jch,2) = NaN;
+                end
+            end
+        end
+
+        % 2.2 exclude the n2_ampLat if the stim_resp are rejected 
+        % replace corresponding elements in n1_amp and n1_lat with NaN
+        n2_ampLat(invalid_indices) = NaN;
+
+        % 2.3 store the processed n2_ampLat 
+        n2_ampLat = transpose(n2_ampLat);
+        n2_ampLat_all = [n2_ampLat_all, n2_ampLat];
+    end
+end
+
+
+
+
+
+
 %% amplitude and latencty scatter plot in patient level. 
 % obtain patient out file 
 num_patient = 20;
