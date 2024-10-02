@@ -161,8 +161,8 @@ hold off;
 %--------------------------------------------------------------------------
 %% correlation of all electrodes at patient level. 
 % obtain patient out file 
-num_patient = 55;
 ptT = readtable(['/Users/zhouzican/Documents/MATLAB/toolboxs/CCEP/pt_mat/','master_pt_list.xlsx']);
+num_patient = height(ptT);
 patient_files = string(strcat(ptT.HUPID, '.mat'));
 patient_ids = string(ptT.HUPID(1:num_patient));
 
@@ -172,7 +172,7 @@ all_n2_corrs = nan(1, num_patient);
 
 for n = 1:num_patient
     
-    which_version = 'ori_pipeline';
+    which_version = 'new_pipeline';
     
     % obtain patient file 
     patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', which_version, patient_files(n));
@@ -250,8 +250,8 @@ xlim([-1, 1]);
 ylim([0.5, num_patient + 0.5]);
 set(gca, 'YTick', 1:num_patient, 'YTickLabel', patient_ids);
 ylabel('Patient ID');
-xlabel('Spearman Correlation');
-title(sprintf('Forest Plot of N1 Correlations (p-value: %.4e)', p_n1));
+xlabel('Correlation beteween Amplitude and Latency');
+title(sprintf('N1 Spearman Correlations Coefficient (p-value: %.4e)', p_n1));
 
 grid on;
 hold off;
@@ -273,8 +273,8 @@ xlim([-1, 1]);
 ylim([0.5, num_patient + 0.5]);
 set(gca, 'YTick', 1:num_patient, 'YTickLabel', patient_ids);
 ylabel('Patient ID');
-xlabel('Spearman Correlation');
-title(sprintf('Forest Plot of N2 Correlations (p-value: %.4e)', p_n2));
+xlabel('Correlation between Amplitdue and Latency');
+title(sprintf('N2 Spearman Correlations Coefficient (p-value: %.4e)', p_n2));
 
 grid on;
 hold off;
