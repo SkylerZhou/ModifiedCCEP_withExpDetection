@@ -1,8 +1,11 @@
 %% calcaulte spearman correlation between N1 amplitude and latency. 
 
 %% loop over patients
-num_patient = 55;
-ptT = readtable(['/Users/zhouzican/Documents/MATLAB/toolboxs/CCEP/pt_mat/','master_pt_list.xlsx']);
+locations = cceps_files;
+data_folder = locations.data_folder;
+ptT = readtable([data_folder,'master_pt_list.xlsx']);
+
+num_patient = height(ptT);
 patient_files = string(strcat(ptT.HUPID, '.mat'));
 patient_ids = string(ptT.HUPID(1:num_patient));
 

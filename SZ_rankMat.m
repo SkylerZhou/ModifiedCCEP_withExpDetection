@@ -7,13 +7,13 @@
 % rejected) 
 
 % specify directories
-num_patient = 32;
+num_patient = 5;
 ptT = readtable(['/Users/zhouzican/Documents/MATLAB/toolboxs/CCEP/pt_mat/','master_pt_list.xlsx']);
 patient_files = string(strcat(ptT.HUPID, '.mat'));
 
 
 % loop over patients
-for n = 32:num_patient
+for n = 5:num_patient
 
     % load patient data 
     new_patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'new_pipeline', patient_files(n));

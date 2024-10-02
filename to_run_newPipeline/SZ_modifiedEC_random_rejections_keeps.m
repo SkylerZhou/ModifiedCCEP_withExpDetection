@@ -27,8 +27,8 @@ end
 % load ori_out 
 ptT = readtable(['/Users/zhouzican/Documents/MATLAB/toolboxs/CCEP/pt_mat/','master_pt_list.xlsx']);
 patient_files = string(strcat(ptT.HUPID, '.mat'));    
-start_patient = 1;
-num_patient = 55;
+start_patient = 55;
+num_patient = 56;
 
 for n = start_patient:num_patient
     patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'ori_pipeline', patient_files(n));

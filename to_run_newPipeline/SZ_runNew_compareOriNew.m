@@ -27,8 +27,8 @@ end
 
 
 %% loop over patients
-start_patient = 1;
-num_patient = 55;
+start_patient = 55;
+num_patient = 56;
 ptT = readtable(['/Users/zhouzican/Documents/MATLAB/toolboxs/CCEP/pt_mat/','master_pt_list.xlsx']);
 patient_files = string(strcat(ptT.HUPID, '.mat'));
 
@@ -62,15 +62,15 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% total number of keeps remained after running original and new algorithms
 % initialize arrays to store 
-arr_patients = cell(55, 1);
-arr_sum_keep_ori = zeros(55, 1);
-arr_sum_keep_new = zeros(55, 1);
-arr_total = zeros(55, 1);
+arr_patients = cell(58, 1);
+arr_sum_keep_ori = zeros(58, 1);
+arr_sum_keep_new = zeros(58, 1);
+arr_total = zeros(58, 1);
 
 
 %% loop over to retrieve patient's data
 start_patient = 1;
-num_patient = 55;
+num_patient = 58;
 which_n = 1;
 
 for n = start_patient:num_patient
