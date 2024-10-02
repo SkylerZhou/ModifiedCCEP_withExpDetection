@@ -1,4 +1,4 @@
-%% calcaulte spearman correlation between N1 amplitude and latency. 
+%% calcaulte spearman correlation between amplitude and latency. 
 
 %% loop over patients
 locations = cceps_files;
@@ -183,7 +183,7 @@ for n = 1:num_patient
         out = temp.pt_out;
     end
 
-    % adjust amp and lat for n1&n2 
+    % adjust amp and lat to remove those that are rejected for n1&n2 
     out = SZ_adjust_network_to_remove_rejects(out); 
 
     % to store amp and lat across all electrodes for each patient 

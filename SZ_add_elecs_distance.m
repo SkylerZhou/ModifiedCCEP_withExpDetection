@@ -18,7 +18,7 @@ try
 catch ME 
     % if error occurs, suggests the coordinates info for the
     % corresponding HUP ID does not exist 
-    fprintf('Error finding the patient coordinates file %s: %s\n', coordinates_filename, ME.message);
+    fprintf('Error finding the patient electrode coordinates file %s: %s\n', coordinates_filename, ME.message);
 end
 
 
@@ -47,7 +47,3 @@ elecs_dist = pdist2(table2array(coor_file), table2array(coor_file), 'euclidean')
 
 % create elecs_dist matrix under out.other
 out.other.elecs_dist = elecs_dist;
-
-
-
-    
