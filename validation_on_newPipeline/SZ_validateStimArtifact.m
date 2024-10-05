@@ -3,17 +3,26 @@
 patient_idx = 19;
 row = 133;
 col = 50;
+%
+
+
+%% prep 
+% load directories to loop over patients
+locations = cceps_files;
+data_folder = locations.data_folder;
+patientOriOut_dir = locations.patientOriOut_dir;
+ptT = readtable([data_folder,'master_pt_list.xlsx']);
+patient_files = string(strcat(ptT.HUPID, '.mat'));
 
 % retrieve the ori_out
-ptT = readtable(['/Users/zhouzican/Documents/MATLAB/toolboxs/CCEP/pt_mat/','master_pt_list.xlsx']);
-patient_files = string(strcat(ptT.HUPID, '.mat'));
-patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'ori_pipeline', patient_files(patient_idx));
-
+patient_file = fullfile(patientOriOut_dir, patient_files(patient_idx));
 temp = load(patient_file);
 out = temp.pt_out;
+% 
 
 
-% run ori_out through alternative_filtering to obtain the detrend_filt_avg
+
+%% run ori_out through alternative_filtering to obtain the detrend_filt_avg
 % that has not undergone interpolation yet
 out = RW_alternative_filtering(out);
 stim_idx = out.elecs(row).stim_idx;
@@ -33,6 +42,8 @@ out = RW_Running_RejectOrKeep(out);
 new_n1_idx = out.elecs(row).N1(col,2)+stim_idx;
 new_n1_x = convert_indices_to_times(new_n1_idx, out.other.stim.fs, -0.5);
 new_n1_y = out.elecs(row).detrend_filt_avgs(new_n1_idx,col);
+%
+
 
 
 %% plot

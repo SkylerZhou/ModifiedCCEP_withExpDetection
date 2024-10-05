@@ -1,18 +1,25 @@
+%% prep
 % load ori_out and new_out
-ptT = readtable(['/Users/zhouzican/Documents/MATLAB/toolboxs/CCEP/pt_mat/','master_pt_list.xlsx']);
+locations = cceps_files;
+data_folder = locations.data_folder;
+ptT = readtable([data_folder,'master_pt_list.xlsx']);
 patient_files = string(strcat(ptT.HUPID, '.mat'));
 patient_idx = 32;
 which_n = 1;
 
-ori_patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'ori_pipeline', patient_files(patient_idx));
+patientOriOut_dir = locations.patientOriOut_dir;
+ori_patient_file = fullfile(patientOriOut_dir, patient_files(patient_idx));
 temp = load(ori_patient_file);
 ori_out = temp.pt_out;
-    
-new_patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'new_pipeline', patient_files(patient_idx));
+
+patientNewOut_dir = locations.patientNewOut_dir;
+new_patient_file = fullfile(patientNewOut_dir, patient_files(patient_idx));
 temp = load(new_patient_file);
 new_out = temp.new_out;
+%
 
-% get rejection info
+
+%% get rejection info
 % rejection_details of ori
 sig_avg_ori = ori_out.rejection_details(which_n).reject.sig_avg;
 pre_thresh_ori = ori_out.rejection_details(which_n).reject.pre_thresh;
@@ -31,6 +38,8 @@ any_reject_new = sig_avg_new == 1 | pre_thresh_new == 1 | at_thresh_new == 1 | n
 exp_reject = (exp_new == 1); 
 fprintf("%d signal are rejected only by exp in the new validation.\n", size(find(exp_reject & ~any_reject_new),1))
 fprintf("%d signal are rejected only by exp but not rejected by the ori validation.\n", size(find(exp_reject & ~any_reject_ori),1))
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

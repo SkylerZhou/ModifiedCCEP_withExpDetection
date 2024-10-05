@@ -1,39 +1,44 @@
-overwrite = 1;
+overwrite = 0;
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Updated pipeline to run through all patients in an csv file
+
+%% prep
 locations = cceps_files;
 data_folder = locations.data_folder;
 results_folder = locations.results_folder;
+ptT = readtable([data_folder,'master_pt_list.xlsx']);
+patient_files = string(strcat(ptT.HUPID, '.mat'));
 out_folder = [results_folder,'new_pipeline/'];
+patientNewOut_dir = locations.patientNewOut_dir;
+patientOriout_dir = locations.patientOriOut_dir;
 
+% add ieeg paths
 pwfile = locations.pwfile;
 login_name = locations.loginname;
 script_folder = locations.script_folder;
 results_folder = locations.results_folder;
 
-
-% add paths
 addpath(genpath(script_folder));
 if isempty(locations.ieeg_folder) == 0
     addpath(genpath(locations.ieeg_folder));
 end
 
-
 % Check if output folder exists, if not, create it
 if ~exist(out_folder, 'dir')
     mkdir(out_folder);
 end
+%
 
 
 %% loop over patients
 start_patient = 55;
 num_patient = 56;
-ptT = readtable(['/Users/zhouzican/Documents/MATLAB/toolboxs/CCEP/pt_mat/','master_pt_list.xlsx']);
-patient_files = string(strcat(ptT.HUPID, '.mat'));
 
 for n = start_patient:num_patient
-    patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'ori_pipeline', patient_files(n));
+    patient_file = fullfile(patientOriout_dir, patient_files(n));
     out = load(patient_file);
     ori_out = out.pt_out;
 
@@ -76,11 +81,11 @@ which_n = 1;
 for n = start_patient:num_patient
 
     % load the mat files outputed by running the two versions of codes
-    ori_patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'ori_pipeline', patient_files(n));
+    ori_patient_file = fullfile(patientOriOut_dir, patient_files(n));
     temp = load(ori_patient_file);
     ori_out = temp.pt_out;
 
-    new_patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'new_pipeline', patient_files(n));
+    new_patient_file = fullfile(patientNewOut_dir, patient_files(n));
     temp = load(new_patient_file);
     new_out = temp.new_out;
  

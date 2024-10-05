@@ -1,5 +1,26 @@
 %% This file aims to plot EC's validations using RW's format 
 
+
+%% prep
+% Get various path locations
+locations = cceps_files; % Need to make a file pointing to you own path
+data_folder = locations.data_folder;
+ptT = readtable([data_folder,'master_pt_list.xlsx']);
+patient_files = string(strcat(ptT.HUPID, '.mat')); 
+patientNewOut_dir = locations.patientNewOut_dir;
+patientOriout_dir = locations.patientOriOut_dir;
+
+% add ieeg paths
+pwfile = locations.pwfile;
+login_name = locations.loginname;
+script_folder = locations.script_folder;
+results_folder = locations.results_folder;
+
+addpath(genpath(script_folder));
+if isempty(locations.ieeg_folder) == 0
+    addpath(genpath(locations.ieeg_folder));
+end
+
 % Parameters
 pretty = 0;
 n_to_plot = 25; % how many total to show
@@ -9,29 +30,15 @@ n1_time = [11e-3 50e-3];
 zoom_times = [-300e-3 300e-3];
 zoom_factor = 2;
 which_n = 1;
-
-% Get various path locations
-locations = cceps_files; % Need to make a file pointing to you own path
-pwfile = locations.pwfile;
-loginname = locations.loginname;
-script_folder = locations.script_folder;
-results_folder = locations.results_folder;
-
-% add paths
-addpath(genpath(script_folder));
-if isempty(locations.ieeg_folder) == 0
-    addpath(genpath(locations.ieeg_folder));
-end
+%
 
 
-% load ori_out 
-ptT = readtable(['/Users/zhouzican/Documents/MATLAB/toolboxs/CCEP/pt_mat/','master_pt_list.xlsx']);
-patient_files = string(strcat(ptT.HUPID, '.mat'));    
+%% load ori_out  
 start_patient = 55;
 num_patient = 56;
 
 for n = start_patient:num_patient
-    patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'ori_pipeline', patient_files(n));
+    patient_file = fullfile(patientOriout_dir, patient_files(n));
     temp = load(patient_file);
     ori_out = temp.pt_out;
 

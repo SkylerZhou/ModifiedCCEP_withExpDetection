@@ -1,9 +1,8 @@
 % Construct a connectivity network from the CCEP using the filtered kept
 % signals.
-% Stimulation given at 512 Hz. Recording/Sampling rate is 2 * 512 Hz = 1024 Hz
-% Total time duration is -0.5 + 0.8 = 1.3 secs
-% Number of samples recorded during this time window = 1.3 sec * 1024 Hz =
-% 1332, which can be seen in size(out.elecs(ich).avg and detrend_filt_avgs)
+% Stimulation given at out.other.fs Hz. Recording/Sampling rate is 2 * out.other.fs Hz
+% we define total time duration as -0.5 + 0.8 = 1.3 secs
+% Number of samples recorded during this time window = 1.3 sec * fs, which can be seen in size(out.elecs(ich).avg and detrend_filt_avgs)
 function out = RW_new_build_network(out,do_gui) 
 
 if ~exist('do_gui','var'), do_gui = 0; end
@@ -56,7 +55,7 @@ for row=1:nchs
             if out.elecs(row).N1(col,1) > 0
             
                 % if stim-response pair, extract the timeseries which starts after peak_idx and end before 0.3 sec.
-                peak_start_index = out.elecs(row).N1(col,2) + stim_idx;  % the index of 0 sec is 512
+                peak_start_index = out.elecs(row).N1(col,2) + stim_idx;  % the index of 0 sec is stim_idx
                 peak_end_index = stim_idx + floor(out.other.stim.fs * peak_end_time);  
                 
                 eeg_times = convert_indices_to_times(peak_start_index:peak_end_index,out.other.stim.fs,times(1));

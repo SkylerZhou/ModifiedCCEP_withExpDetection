@@ -5,6 +5,7 @@
 % load directories to loop over patients
 locations = cceps_files;
 data_folder = locations.data_folder;
+patientNewOut_dir = locations.patientNewOut_dir;
 ptT = readtable([data_folder,'master_pt_list.xlsx']);
 
 num_patient = height(ptT);
@@ -23,11 +24,11 @@ all_n2_latDist_corr = nan(1, num_patient);
 
 
 %% loop over patients
-for n = 1:num_patient
+for n = 1:1
     
 
     % load patient out file 
-    patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'new_pipeline', patient_files(n));
+    patient_file = fullfile(patientNewOut_dir, patient_files(n));
     temp = load(patient_file);
     out = temp.new_out;
     

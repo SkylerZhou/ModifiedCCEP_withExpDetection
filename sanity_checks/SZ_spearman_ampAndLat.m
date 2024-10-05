@@ -3,6 +3,8 @@
 %% loop over patients
 locations = cceps_files;
 data_folder = locations.data_folder;
+patientNewOut_dir = locations.patientNewOut_dir;
+patientOriout_dir = locations.patientOriOut_dir;
 ptT = readtable([data_folder,'master_pt_list.xlsx']);
 
 num_patient = height(ptT);
@@ -21,14 +23,16 @@ idx_patient = 1;
 
 for n = 1:num_patient
 
-    which_version = 'ori_pipeline';
+    which_version = 'new_pipeline';
     
     % obtain patient file 
-    patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', which_version, patient_files(n));
-    temp = load(patient_file);
     if strcmp(which_version, 'new_pipeline')
+        patient_file = fullfile(patientNewOut_dir, patient_files(n));
+        temp = load(patient_file);
         out = temp.new_out;
     else
+        patient_file = fullfile(patientOriout_dir, patient_files(n));
+        temp = load(patient_file);
         out = temp.pt_out;
     end
 
