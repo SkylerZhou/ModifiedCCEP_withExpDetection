@@ -17,7 +17,7 @@ patient_files = string(strcat(ptT.HUPID, '.mat'));
 
 
 %% loop over patients
-for n = 18:18
+for n = 1:1
 
     % load patient out file  
     new_patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'new_pipeline', patient_files(n));
