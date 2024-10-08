@@ -13,6 +13,7 @@ ptT = readtable([data_folder,'master_pt_list.xlsx']);
 
 num_patient = height(ptT);
 patient_files = string(strcat(ptT.HUPID, '.mat'));
+patientNewOut_dir = locations.patientNewOut_dir;
 %
 
 
@@ -20,7 +21,7 @@ patient_files = string(strcat(ptT.HUPID, '.mat'));
 for n = 1:1
 
     % load patient out file  
-    new_patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', 'new_pipeline', patient_files(n));
+    new_patient_file = fullfile(patientNewOut_dir, patient_files(n));
     temp = load(new_patient_file);
     out = temp.new_out;
     % adjust amp and lat for n1&n2 to NaN if they are rejected 
@@ -33,24 +34,26 @@ for n = 1:1
     idx_elecs = 1;
     % 
 
-    % loop over all elecs of this patient 
+    %% loop over all electrodes of this patient 
     % extract latencies of all responding elecs of a stim electrode
     for ich = 1:num_elecs
         % if the current ich-th elecs is not stimulating, skip it and leave
         % its row in rank_mat all NaN.
         if isempty(out.elecs(ich).arts), continue; end
 
-        %% for N1
+        % for N1
         % rank according to their latencies
         n1_lat = out.elecs(ich).n1_adj(:,2);
         rank_n1_lat = tiedrank(n1_lat, 'nanflag', 'omitnan');
 
         % store as the idx_elecs row in n1_rank_mat
         n1_rank_mat(ich,:) = rank_n1_lat;
-
-
+     
+        % for N2
+        n2_lat = out.elecs(ich).n2_adj(:,2);
+        rank_n2_lat = tiedrank(n2_lat, 'nanflag', 'omitnan');
+        n2_rank_mat(ich,:) = rank_n2_lat;
     end
-
 end
 
 

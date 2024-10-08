@@ -47,3 +47,46 @@ elecs_dist = pdist2(table2array(coor_file), table2array(coor_file), 'euclidean')
 
 % create elecs_dist matrix under out.other
 out.other.elecs_dist = elecs_dist;
+
+
+
+
+% would have been a easier/one-step approach, but cannot mount/takes too long to remote serve
+%{
+%% prep
+% mount to remote server
+locations = cceps_files;
+mount_dir = locations.mount_dir;
+data_folder = locations.data_folder;
+coord_folder_dir1 = locations.coord_folder_dir1;
+coord_folder_dir2 = locations.coord_folder_dir2;
+coord_file_dir = locations.coord_file_dir;
+
+% get the convert_file, which contains hupid to rid conversion
+patient_id = out.name;
+convert_file = readtable(fullfile(data_folder, 'convert_hupid_rid.csv'));
+totalnum_patient = size(convert_file, 1);
+pt_rids = convert_file.rid_filename;
+pt_hupids = convert_file.HUPID;
+%
+
+
+%% loop over all rids in the conversion file
+for n = 1:totalnum_patient
+
+    % check if we have the corresponding hupid out file. if no, skip this
+    % iteration
+    pt_hupid = pt_hupids{n};
+    if ~ismember(pt_hupid, ptT.HUPID) % continue if pt_hupid is not in ptT.HUPID
+        continue 
+    end
+
+    % build the search pattern for coordinate file that are allocated in
+    % two possible directories
+    pt_rid = pt_rids{177};
+    coord_file_dir1 = fullfile(coord_folder_dir1, pt_rid, coord_file_dir, [pt_rid '*.csv']);
+    coord_file_dir2 = fullfile(coord_folder_dir2, pt_rid, coord_file_dir, [pt_rid '*.csv']);
+
+    % look inside one of the two the coord_file directory to check if the *.csv file exist
+end
+%}

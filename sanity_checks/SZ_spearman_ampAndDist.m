@@ -24,7 +24,7 @@ all_n2_latDist_corr = nan(1, num_patient);
 
 
 %% loop over patients
-for n = 1:1
+for n = 1:num_patient
     
 
     % load patient out file 
@@ -114,12 +114,33 @@ disp(['p-value for the one-sample t-test on N2 correlations between latency and 
 
 
 %% forest plot
+% has to manually change the following variables to plot for different
+% graphs
+%{
+x_label = 'Amplitude and Latency';
+toPlot_n1 = all_n1_ampLat_corr;
+toPlot_n2 = all_n2_ampLat_corr;
+p_n1 = p_n1_ampLat;
+p_n2 = p_n2_ampLat;
+%}
+
+x_label = 'Amplitude and Distance';
+toPlot_n1 = all_n1_ampDist_corr;
+toPlot_n2 = all_n2_ampDist_corr;
+p_n1 = p_n1_ampDist;
+p_n2 = p_n2_ampDist;
+
+%{
 x_label = 'Latency and Distance';
 toPlot_n1 = all_n1_latDist_corr;
 toPlot_n2 = all_n2_latDist_corr;
 p_n1 = p_n1_latDist;
 p_n2 = p_n2_latDist;
+%}
+%
 
+
+%% to plot
 figure;
 tiledlayout(1,2);
 %
