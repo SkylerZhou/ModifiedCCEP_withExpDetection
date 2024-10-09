@@ -1,4 +1,5 @@
 # ModifiedCCEP_withExpDetection
+Note: Opening multiple CCEP folders might result in conflict of functions. Remember to remove one folder from path if that is the case.
 
 ## 1. to_run_newPipeline
 Updated on three aspects based on https://github.com/erinconrad/CCEPS/tree/main and https://github.com/RudyWh/Modified_CCEP_Detection to fit new cohort:

@@ -51,7 +51,7 @@ out.other.elecs_dist = elecs_dist;
 
 
 
-% would have been a easier/one-step approach, but cannot mount/takes too long to remote serve
+% would have been a easier/one-step approach, but cannot mount/takes too long to mount to remote serve
 %{
 %% prep
 % mount to remote server

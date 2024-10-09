@@ -194,3 +194,96 @@ title(sprintf('N2 Spearman Correlations Coefficient (p-value: %.4e)', p_n2));
 grid on;
 hold off;
 %--------------------------------------------------------------------------
+
+
+
+
+%--------------------------------------------------------------------------
+%% scatter plot of lat and distance in patient level. 
+
+%% prep
+locations = cceps_files;
+data_folder = locations.data_folder;
+patientNewOut_dir = locations.patientNewOut_dir;
+ptT = readtable([data_folder,'master_pt_list.xlsx']);
+
+num_patient = 32;
+patient_files = string(strcat(ptT.HUPID, '.mat'));
+patient_ids = string(ptT.HUPID(num_patient));
+%
+
+
+%% obtain the patient file; get lat and distance 
+for n = num_patient:num_patient
+    
+    which_version = 'new_pipeline';
+    
+    % obtain patient file 
+    patient_file = fullfile(patientNewOut_dir, patient_files(n));
+    temp = load(patient_file);
+    out = temp.new_out;
+
+    % try add_elecs_distance function; check if there are corresponding
+    % coordinate files to build distance matrix for this patient 
+    try 
+        out = SZ_add_elecs_distance(out);
+    catch ME 
+        fprintf('%s\n', ME.message);
+        continue
+    end
+    % adjust amp and lat to remove those that are rejected for n1&n2 
+    out = SZ_adjust_network_to_remove_rejects(out); 
+
+
+    % to store amp and lat across all electrodes for each patient 
+    num_elecs = size(out.elecs, 2);
+    n1_latDist_all = []; % To store N1 lat and dist pairs for all the stimulating electrode
+    n2_latDist_all = []; % To store N2 lat and dist pairs ..
+
+    
+    for ich = 1:num_elecs
+        if isempty(out.elecs(ich).arts), continue; end
+
+        % cp the distance info as the thrid column to n1_adj&n2_adj
+        out.elecs(ich).n1_adj(:,3) = out.other.elecs_dist(:,ich);
+        out.elecs(ich).n2_adj(:,3) = out.other.elecs_dist(:,ich);
+
+        n1_latDist = out.elecs(ich).n1_adj(:,[2,3]);
+        n2_latDist = out.elecs(ich).n2_adj(:,[2,3]);
+        
+        % store the processed n1_ampLat 
+        n1_latDist = transpose(n1_latDist);
+        n1_latDist_all = [n1_latDist_all, n1_latDist];
+     
+        % store the processed n2_ampLat 
+        n2_latDist = transpose(n2_latDist);
+        n2_latDist_all = [n2_latDist_all, n2_latDist];
+    end
+end
+
+
+%% scatter plot
+% for n1
+scatter(n1_latDist_all(1,:), n1_latDist_all(2,:),...
+    'MarkerFaceColor','b','MarkerEdgeColor','b',...
+    'MarkerFaceAlpha',.2,'MarkerEdgeAlpha',.2)
+
+% Set axes properties
+xlim([0, 50]);
+ylim([0, 150]);
+xlabel('Latency (ms)');
+ylabel('Distance');
+title(sprintf('Latency vs. Distance for Patient %s', patient_ids));
+
+
+% for n2
+scatter(n2_latDist_all(1,:), n2_latDist_all(2,:),...
+    'MarkerFaceColor','b','MarkerEdgeColor','b',...
+    'MarkerFaceAlpha',.2,'MarkerEdgeAlpha',.2)
+
+% Set axes properties
+xlim([0, 200]);
+ylim([0, 150]);
+xlabel('Latency (ms)');
+ylabel('Distance');
+title(sprintf('Latency vs. Distance for Patient %s', patient_ids));

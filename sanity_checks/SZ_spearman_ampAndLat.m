@@ -290,25 +290,30 @@ hold off;
 
 %--------------------------------------------------------------------------
 %% scatter plot of amp and lat in patient level. 
-% obtain patient out file 
+
+
+%% prep
+locations = cceps_files;
+data_folder = locations.data_folder;
+patientNewOut_dir = locations.patientNewOut_dir;
+ptT = readtable([data_folder,'master_pt_list.xlsx']);
+
 num_patient = 20;
-ptT = readtable(['/Users/zhouzican/Documents/MATLAB/toolboxs/CCEP/pt_mat/','master_pt_list.xlsx']);
 patient_files = string(strcat(ptT.HUPID, '.mat'));
 patient_ids = string(ptT.HUPID(num_patient));
+%
 
 
+%% obtain this patient out file; get amp and lat data
 for n = num_patient:num_patient
     
     which_version = 'new_pipeline';
     
     % obtain patient file 
-    patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', which_version, patient_files(n));
+    patient_file = fullfile(patientNewOut_dir, patient_files(n));
     temp = load(patient_file);
-    if strcmp(which_version, 'new_pipeline')
-        out = temp.new_out;
-    else
-        out = temp.pt_out;
-    end
+    out = temp.new_out;
+
 
     % adjust amp and lat for n1&n2 
     out = SZ_adjust_network_to_remove_rejects(out); 
