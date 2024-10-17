@@ -152,7 +152,7 @@ hold on;
 
 for i = 1:num_patient   
     % Plot a marker at the mean
-    plot(toPlot_n1(i), i, 'bo', 'MarkerFaceColor', [0 0.4470 0.7410]);
+    plot(toPlot_n1(i), i, 'bo', 'MarkerFaceColor', [0.4660 0.6740 0.1880]);
 end
 
 % Draw vertical red line at x=0
@@ -177,7 +177,7 @@ hold on;
 
 for i = 1:num_patient
     % Plot a marker at the mean
-    plot(toPlot_n2(i), i, 'bo', 'MarkerFaceColor', [0 0.4470 0.7410]);
+    plot(toPlot_n2(i), i, 'bo', 'MarkerFaceColor', [0.4660 0.6740 0.1880]);
 end
 
 % Draw vertical red line at x=0
