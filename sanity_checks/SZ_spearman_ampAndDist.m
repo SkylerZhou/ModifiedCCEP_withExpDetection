@@ -24,8 +24,7 @@ all_n2_latDist_corr = nan(1, num_patient);
 
 
 %% loop over patients
-for n = 1:num_patient
-    
+for n = 1:1
 
     % load patient out file 
     patient_file = fullfile(patientNewOut_dir, patient_files(n));
