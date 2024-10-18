@@ -40,8 +40,8 @@ for n = 1:1
         fprintf('%s\n', ME.message);
         continue
     end
-    % adjust amp and lat to remove those that are rejected for n1&n2 
-    out = SZ_adjust_network_to_remove_rejects(out); 
+    % adjust amp and lat to remove those that are rejected for n1&n2 if not already did in SZ_runNew_compareOriNew.m
+    % out = SZ_adjust_network_to_remove_rejects(out); 
 
 
     % to store amp and lat across all electrodes for each patient 

@@ -37,8 +37,8 @@ for n = 1:num_patient
     end
 
     % adjust amp and lat for n1&n2 to NaN if they are rejected in
-    % rejection_details
-    out = SZ_adjust_network_to_remove_rejects(out); 
+    % rejection_details if not already did in SZ_runNew_compareOriNew.m
+    % out = SZ_adjust_network_to_remove_rejects(out); 
     
     %% loop over elecs
     % to store correlations between the amplitude and latency of each electrode for

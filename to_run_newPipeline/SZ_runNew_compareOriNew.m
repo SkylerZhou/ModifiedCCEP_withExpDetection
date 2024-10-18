@@ -9,7 +9,8 @@ data_folder = locations.data_folder;
 results_folder = locations.results_folder;
 ptT = readtable([data_folder,'master_pt_list.xlsx']);
 patient_files = string(strcat(ptT.HUPID, '.mat'));
-out_folder = [results_folder,'new_pipeline/'];
+%out_folder = [results_folder,'new_pipeline/'];
+out_folder = [results_folder,'new_pipeline_keptonly/'];
 patientNewOut_dir = locations.patientNewOut_dir;
 patientOriOut_dir = locations.patientOriOut_dir;
 
@@ -45,6 +46,7 @@ for n = start_patient:num_patient
     new_out = RW_Running_RejectOrKeep(new_out);
     new_out = RW_new_build_network(new_out); 
     new_out = RW_require_both_Ns(new_out);
+    new_out = SZ_adjust_network_to_remove_rejects(new_out); 
 
     % save the patient output file
     out_file_name = patient_files(n);

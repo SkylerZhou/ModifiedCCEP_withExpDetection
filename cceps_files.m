@@ -6,7 +6,7 @@ locations.loginname = 'skylerz';
 locations.script_folder = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP/ccep_script/';
 locations.results_folder = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP/ccep_result/';
 locations.data_folder = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP/pt_mat/';
-locations.patientNewOut_dir = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP/ccep_result/new_pipeline';
+locations.patientNewOut_dir = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP/ccep_result/new_pipeline_keptonly';
 locations.patientOriOut_dir = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP/ccep_result/ori_pipeline';
 
 % files containing electrodes distance info
