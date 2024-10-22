@@ -8,7 +8,7 @@ data_folder = locations.data_folder;
 ptT = readtable([data_folder,'master_pt_list.xlsx']);
 patient_files = string(strcat(ptT.HUPID, '.mat')); 
 patientNewOut_dir = locations.patientNewOut_dir;
-patientOriout_dir = locations.patientOriOut_dir;
+patientOriOut_dir = locations.patientOriOut_dir;
 
 % add ieeg paths
 pwfile = locations.pwfile;
@@ -34,11 +34,11 @@ which_n = 1;
 
 
 %% load ori_out  
-start_patient = 55;
-num_patient = 56;
+start_patient = 16;
+num_patient = 16;
 
 for n = start_patient:num_patient
-    patient_file = fullfile(patientOriout_dir, patient_files(n));
+    patient_file = fullfile(patientOriOut_dir, patient_files(n));
     temp = load(patient_file);
     ori_out = temp.pt_out;
 
