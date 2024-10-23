@@ -24,12 +24,12 @@ all_n2_latDist_corr = nan(1, num_patient);
 
 
 %% loop over patients
-for n = 1:1
+for n = 1:num_patient
 
     % load patient out file 
     patient_file = fullfile(patientNewOut_dir, patient_files(n));
     temp = load(patient_file);
-    out = temp.new_out;
+    out = temp.out;
     
 
     % try add_elecs_distance function; check if there are corresponding

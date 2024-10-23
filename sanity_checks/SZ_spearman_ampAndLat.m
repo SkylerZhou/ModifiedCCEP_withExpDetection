@@ -4,7 +4,7 @@
 locations = cceps_files;
 data_folder = locations.data_folder;
 patientNewOut_dir = locations.patientNewOut_dir;
-patientOriout_dir = locations.patientOriOut_dir;
+patientOriOut_dir = locations.patientOriOut_dir;
 ptT = readtable([data_folder,'master_pt_list.xlsx']);
 
 num_patient = height(ptT);
@@ -29,9 +29,9 @@ for n = 1:num_patient
     if strcmp(which_version, 'new_pipeline')
         patient_file = fullfile(patientNewOut_dir, patient_files(n));
         temp = load(patient_file);
-        out = temp.new_out;
+        out = temp.out;
     else
-        patient_file = fullfile(patientOriout_dir, patient_files(n));
+        patient_file = fullfile(patientOriOut_dir, patient_files(n));
         temp = load(patient_file);
         out = temp.pt_out;
     end
@@ -165,7 +165,12 @@ hold off;
 %--------------------------------------------------------------------------
 %% correlation of all electrodes at patient level. 
 % obtain patient out file 
-ptT = readtable(['/Users/zhouzican/Documents/MATLAB/toolboxs/CCEP/pt_mat/','master_pt_list.xlsx']);
+
+locations = cceps_files;
+data_folder = locations.data_folder;
+patientNewOut_dir = locations.patientNewOut_dir;
+
+ptT = readtable([data_folder,'master_pt_list.xlsx']);
 num_patient = height(ptT);
 patient_files = string(strcat(ptT.HUPID, '.mat'));
 patient_ids = string(ptT.HUPID(1:num_patient));
@@ -175,20 +180,14 @@ all_n2_corrs = nan(1, num_patient);
 
 
 for n = 1:num_patient
-    
-    which_version = 'new_pipeline';
-    
+        
     % obtain patient file 
-    patient_file = fullfile('toolboxs', 'CCEP', 'ccep_result', which_version, patient_files(n));
+    patient_file = fullfile(patientNewOut_dir, patient_files(n));
     temp = load(patient_file);
-    if strcmp(which_version, 'new_pipeline')
-        out = temp.new_out;
-    else
-        out = temp.pt_out;
-    end
+    out = temp.out;
 
     % adjust amp and lat to remove those that are rejected for n1&n2 
-    out = SZ_adjust_network_to_remove_rejects(out); 
+    % out = SZ_adjust_network_to_remove_rejects(out); 
 
     % to store amp and lat across all electrodes for each patient 
     num_elecs = size(out.elecs, 2);
