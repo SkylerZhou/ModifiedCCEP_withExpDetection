@@ -34,3 +34,4 @@ for n = 1:num_patient
     out_file_name = patient_files(n);
     save(fullfile(out_folder, out_file_name), 'out');
 end
+
