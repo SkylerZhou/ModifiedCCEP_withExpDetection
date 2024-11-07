@@ -27,7 +27,8 @@ for n = 2:2
     patient_file = fullfile(file_folder, patient_files(n));
     temp = load(patient_file);
     out = temp.out;
-
+    
+    %% extract N1 amp and lat
     for ich = 1:num_elecs
         % if the current elecs is not a stimulating elecs, skip it as it
         % contains no data to be altered.
@@ -36,6 +37,7 @@ for n = 2:2
         % extract n1 
         n1 = out.elecs(ich).N1(:,1:2);
     end
+    %
     
     % create empty matrix with size = (number of stim * number of resp) rows * 6 columns
     num_cols = 6; % patient, stim_channel, response_channel, distance_between_channels, N1_amp, N1_lat

@@ -26,6 +26,15 @@ for n = 1:num_patient
     patient_file = fullfile(patientNewOut_dir, patient_files(n));
     temp = load(patient_file);
     out = temp.new_out;
+
+    % try add_elecs_distance function; check if there are corresponding
+    % coordinate files to build distance matrix for this patient 
+    try 
+        out = SZ_add_elecs_distance(out);
+    catch ME 
+        fprintf('%s\n', ME.message);
+        continue
+    end
     
     % adjust amp and lat to remove those that are rejected for n1&n2 
     out = SZ_adjust_network_to_remove_rejects(out); 

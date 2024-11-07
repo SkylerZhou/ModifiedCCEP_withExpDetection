@@ -31,7 +31,6 @@ for n = 1:num_patient
     temp = load(patient_file);
     out = temp.out;
     
-
     % try add_elecs_distance function; check if there are corresponding
     % coordinate files to build distance matrix for this patient 
     try 
