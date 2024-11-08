@@ -22,8 +22,7 @@ end
 
 
 %% loop over patients
-%for n = 1:num_patient
-for n = 2:2   
+for n = 1:num_patient
 
 
     %% load patient out file 
@@ -42,24 +41,25 @@ for n = 2:2
         % if the current elecs is not a stimulating elecs, skip it
         if isempty(out.elecs(ich).arts), continue; end
 
-        % if no distance info, extract only N1 amp and lat
-        if isempty(out.other.elecs_dist)
-            % extract n1 amp and lat
-            n1 = out.elecs(ich).n1_adj;
-            n1_all = [n1_all; n1];
-        else
+        % if exist distance info, extract n1 amp and lat, and distance
+        if isfield(out.other, 'elecs_dist') 
             % cp the distance info as the thrid column to n1_adj
             out.elecs(ich).n1_adj(:,3) = out.other.elecs_dist(:,ich);
             % extract n1 amp and lat, and distance
             n1 = out.elecs(ich).n1_adj;
             n1_all = [n1_all; n1];
+        else
+            % else extract only n1 amp and lat
+            n1 = out.elecs(ich).n1_adj;
+            n1_all = [n1_all; n1];
+
         end
 
-            % extract stim and response labels 
-            stim = repmat(out.chLabels(ich), size(out.elecs(ich).n1_adj,1), 1);
-            stim_all = [stim_all; stim];
-            resp = out.chLabels(1: size(out.elecs(ich).n1_adj,1));
-            resp_all = [resp_all; resp];
+        % extract stim and response labels 
+        stim = repmat(out.chLabels(ich), size(out.elecs(ich).n1_adj,1), 1);
+        stim_all = [stim_all; stim];
+        resp = out.chLabels(1: size(out.elecs(ich).n1_adj,1));
+        resp_all = [resp_all; resp];
     end
 
 
