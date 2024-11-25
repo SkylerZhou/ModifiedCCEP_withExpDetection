@@ -37,7 +37,7 @@ start_patient = 55;
 num_patient = 56;
 
 for n = start_patient:num_patient
-    patient_file = fullfile(patientOriout_dir, patient_files(n));
+    patient_file = fullfile(patientOriOut_dir, patient_files(n));
     out = load(patient_file);
     ori_out = out.pt_out;
 
