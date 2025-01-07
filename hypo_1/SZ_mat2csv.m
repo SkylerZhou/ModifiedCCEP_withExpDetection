@@ -56,9 +56,9 @@ for n = 1:num_patient
         end
 
         % extract stim and response labels 
-        stim = repmat(out.chLabels(ich), size(out.elecs(ich).n1_adj,1), 1);
+        stim = repmat(out.bipolar_labels(ich), size(out.elecs(ich).n1_adj,1), 1);
         stim_all = [stim_all; stim];
-        resp = out.chLabels(1: size(out.elecs(ich).n1_adj,1));
+        resp = out.bipolar_labels(1: size(out.elecs(ich).n1_adj,1));
         resp_all = [resp_all; resp];
     end
 
