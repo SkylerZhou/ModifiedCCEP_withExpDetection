@@ -1,4 +1,4 @@
-%% calculate spearman correlation between amplitude and electrode distance
+%% calculate spearman correlation between amplitude and electrode distance on the patient level
 
 
 %% prep 
@@ -128,6 +128,8 @@ toPlot_n2 = all_n2_ampDist_corr;
 p_n1 = p_n1_ampDist;
 p_n2 = p_n2_ampDist;
 
+n1_ampDist_corr_avg = mean(all_n1_ampDist_corr, 'omitmissing');
+
 %{
 x_label = 'Latency and Distance';
 toPlot_n1 = all_n1_latDist_corr;
@@ -140,7 +142,7 @@ p_n2 = p_n2_latDist;
 
 %% to plot
 figure;
-tiledlayout(1,2);
+tiledlayout(1,1);
 %
 
 
@@ -163,6 +165,9 @@ set(gca, 'YTick', 1:num_patient, 'YTickLabel', patient_ids);
 ylabel('Patient ID');
 xlabel(sprintf('Correlation between %s', x_label));
 title(sprintf('N1 Spearman Correlations Coefficienet (p-value: %.4e)', p_n1));
+
+txt = sprintf('rho = %f; #pts = 40', n1_ampDist_corr_avg);
+text(0.4,20,txt)
 
 grid on;
 hold off;

@@ -22,7 +22,7 @@ end
 
 
 %% loop over patients
-for n = 1:num_patient
+for n = 1:1
 
 
     %% load patient out file 

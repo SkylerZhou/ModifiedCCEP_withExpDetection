@@ -16,3 +16,6 @@ Supplementary files for graphing and checking whether expoential waves and stim 
 Conducted pair-wise comparison between N1&N2 amplitudes and latencies, as well as electrode distances as a simple sanity check on the new pipeline. 
 1. SZ_adjust_network_to_remove_rejects.m convert amplitude and latency of the N1&N2 that were rejected to NaN.
 2. SZ_add_elecs_distance.m adds a electrode distance matrix. 
+
+## 4. hypo_1
+firstly run SZ_keptOnly.m, then SZ_mat2csv.m 

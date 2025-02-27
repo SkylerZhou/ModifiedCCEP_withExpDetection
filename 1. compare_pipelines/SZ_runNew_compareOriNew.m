@@ -1,4 +1,4 @@
-overwrite = 0;
+overwrite = 1;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Updated pipeline to run through all patients in an csv file
@@ -33,10 +33,15 @@ end
 
 
 %% loop over patients
-start_patient = 55;
-num_patient = 56;
+start_patient = 43;
+num_patient = 43;
 
 for n = start_patient:num_patient
+
+    % check if i called the original output instead of the new output 
+    % i did it right, but the ori_out and the new_out are different 
+    % probably check the output after each rw func to see where exactly
+    % went wrong 
     patient_file = fullfile(patientOriOut_dir, patient_files(n));
     out = load(patient_file);
     ori_out = out.pt_out;
