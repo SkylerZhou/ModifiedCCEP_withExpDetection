@@ -1,4 +1,4 @@
-overwrite = 1;
+overwrite = 0;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Updated pipeline to run through all patients in an csv file
@@ -9,7 +9,6 @@ data_folder = locations.data_folder;
 results_folder = locations.results_folder;
 ptT = readtable([data_folder,'master_pt_list.xlsx']);
 patient_files = string(strcat(ptT.HUPID, '.mat'));
-%out_folder = [results_folder,'new_pipeline/'];
 out_folder = [results_folder,'new_pipeline_keptonly/'];
 patientNewOut_dir = locations.patientNewOut_dir;
 patientOriOut_dir = locations.patientOriOut_dir;
@@ -33,8 +32,8 @@ end
 
 
 %% loop over patients
-start_patient = 43;
-num_patient = 43;
+start_patient = 52;
+num_patient = 52;
 
 for n = start_patient:num_patient
 
