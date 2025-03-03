@@ -13,16 +13,19 @@ thresh_exp = 0.6;
 peak_end_time = 0.3;
 wavs = {'N1','N2'};
 
-%% Get various path locations
+%{
+% delete on 2025/03/02
+%% Get various path locations 
 locations = cceps_files; % Need to make a file pointing to you own path
 script_folder = locations.script_folder;
-results_folder = locations.results_folder;
+%results_folder = locations.results_folder;
 
 % add paths
 addpath(genpath(script_folder));
 if isempty(locations.ieeg_folder) == 0
     addpath(genpath(locations.ieeg_folder));
 end
+%}
 
 %% Basic info
 elecs = out.elecs;

@@ -4,36 +4,39 @@ overwrite = 0;
 %% Updated pipeline to run through all patients in an csv file
 
 %% prep
+% dir to input files and scripts
 locations = cceps_files;
 data_folder = locations.data_folder;
-results_folder = locations.results_folder;
 ptT = readtable([data_folder,'master_pt_list.xlsx']);
 patient_files = string(strcat(ptT.HUPID, '.mat'));
-out_folder = [results_folder,'new_pipeline_keptonly/'];
-patientNewOut_dir = locations.patientNewOut_dir;
-patientOriOut_dir = locations.patientOriOut_dir;
+script_folder = locations.script_folder;
+
+% to acess the 1st version of patients' output
+firstOut_dir = locations.firstOut_dir;
+
+% to store the output of the 3rd version
+thirdOut_dir = locations.thirdOut_dir;
+
+% delete on 2025/03/02
+%results_folder = locations.results_folder;
+%out_folder = [results_folder,'new_pipeline_keptonly/'];
+%patientNewOut_dir = locations.patientNewOut_dir;
+%patientOriOut_dir = locations.patientOriOut_dir;
 
 % add ieeg paths
 pwfile = locations.pwfile;
 login_name = locations.loginname;
-script_folder = locations.script_folder;
-results_folder = locations.results_folder;
 
 addpath(genpath(script_folder));
 if isempty(locations.ieeg_folder) == 0
     addpath(genpath(locations.ieeg_folder));
 end
 
-% Check if output folder exists, if not, create it
-if ~exist(out_folder, 'dir')
-    mkdir(out_folder);
-end
-%
 
 
 %% loop over patients
-start_patient = 52;
-num_patient = 52;
+start_patient = 30;
+num_patient = 30;
 
 for n = start_patient:num_patient
 
@@ -41,7 +44,7 @@ for n = start_patient:num_patient
     % i did it right, but the ori_out and the new_out are different 
     % probably check the output after each rw func to see where exactly
     % went wrong 
-    patient_file = fullfile(patientOriOut_dir, patient_files(n));
+    patient_file = fullfile(firstOut_dir, patient_files(n));
     out = load(patient_file);
     ori_out = out.pt_out;
 
@@ -54,7 +57,7 @@ for n = start_patient:num_patient
 
     % save the patient output file
     out_file_name = patient_files(n);
-    save(fullfile(out_folder, out_file_name), 'new_out');
+    save(fullfile(thirdOut_dir, out_file_name), 'new_out');
 
     % if there is any error in this step (keeps not sufficient to build the
     % figure), display error and continue
@@ -85,11 +88,11 @@ which_n = 1;
 for n = start_patient:num_patient
 
     % load the mat files outputed by running the two versions of codes
-    ori_patient_file = fullfile(patientOriOut_dir, patient_files(n));
+    ori_patient_file = fullfile(firstOut_dir, patient_files(n));
     temp = load(ori_patient_file);
     ori_out = temp.pt_out;
 
-    new_patient_file = fullfile(patientNewOut_dir, patient_files(n));
+    new_patient_file = fullfile(thirdOut_dir, patient_files(n));
     temp = load(new_patient_file);
     new_out = temp.new_out;
  
