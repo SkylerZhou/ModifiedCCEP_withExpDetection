@@ -13,20 +13,6 @@ thresh_exp = 0.6;
 peak_end_time = 0.3;
 wavs = {'N1','N2'};
 
-%{
-% delete on 2025/03/02
-%% Get various path locations 
-locations = cceps_files; % Need to make a file pointing to you own path
-script_folder = locations.script_folder;
-%results_folder = locations.results_folder;
-
-% add paths
-addpath(genpath(script_folder));
-if isempty(locations.ieeg_folder) == 0
-    addpath(genpath(locations.ieeg_folder));
-end
-%}
-
 %% Basic info
 elecs = out.elecs;
 chLabels = out.chLabels;
@@ -157,7 +143,8 @@ for w = 1:length(wavs)
     
     %% Add this to array
     if w == 1
-        out.stim_chs = stim_chs;
+        % SZ: changed on Mar 5th, 2025 to try to fix the stim_chs issues 
+        % out.stim_chs = stim_chs;
         out.response_chs = response_chs;
     end
     

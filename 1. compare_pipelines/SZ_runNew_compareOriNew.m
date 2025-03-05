@@ -1,4 +1,4 @@
-overwrite = 0;
+overwrite = 1;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Updated pipeline to run through all patients in an csv file
@@ -17,12 +17,6 @@ firstOut_dir = locations.firstOut_dir;
 % to store the output of the 3rd version
 thirdOut_dir = locations.thirdOut_dir;
 
-% delete on 2025/03/02
-%results_folder = locations.results_folder;
-%out_folder = [results_folder,'new_pipeline_keptonly/'];
-%patientNewOut_dir = locations.patientNewOut_dir;
-%patientOriOut_dir = locations.patientOriOut_dir;
-
 % add ieeg paths
 pwfile = locations.pwfile;
 login_name = locations.loginname;
@@ -35,23 +29,19 @@ end
 
 
 %% loop over patients
-start_patient = 30;
-num_patient = 30;
+start_patient = 43;
+num_patient = 55;
 
 for n = start_patient:num_patient
 
-    % check if i called the original output instead of the new output 
-    % i did it right, but the ori_out and the new_out are different 
-    % probably check the output after each rw func to see where exactly
-    % went wrong 
     patient_file = fullfile(firstOut_dir, patient_files(n));
     out = load(patient_file);
     ori_out = out.pt_out;
 
     % run single out file 
-    new_out = RW_alternative_filtering(ori_out);
-    new_out = RW_Running_RejectOrKeep(new_out);
-    new_out = RW_new_build_network(new_out); 
+    new_out = RW_alternative_filtering(ori_out); % all 0
+    new_out = RW_Running_RejectOrKeep(new_out); % all 0
+    new_out = RW_new_build_network(new_out); % starts to have 1 
     new_out = RW_require_both_Ns(new_out);
     new_out = SZ_adjust_network_to_remove_rejects(new_out); 
 
