@@ -8,7 +8,7 @@ data_folder = locations.data_folder;
 ptT = readtable([data_folder,'master_pt_list.xlsx']);
 results_folder = locations.results_folder;
 mat_folder = [results_folder,'new_pipeline_keptonly/'];
-csv_folder = [results_folder,'new_pipeline_keptonly_csv/'];
+csv_folder = [results_folder,'new_pipeline_keptonly_csv_sarah/'];
 
 num_patient = height(ptT);
 patient_files = string(strcat(ptT.HUPID, '.mat'));
@@ -22,7 +22,7 @@ end
 
 
 %% loop over patients
-for n = 1:1
+for n = 43:43
 
 
     %% load patient out file 

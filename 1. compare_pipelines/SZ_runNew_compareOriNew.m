@@ -1,4 +1,5 @@
 overwrite = 1;
+set(0, 'DefaultFigureVisible', 'off'); % prevent figures from poping up
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Updated pipeline to run through all patients in an csv file
@@ -29,8 +30,8 @@ end
 
 
 %% loop over patients
-start_patient = 43;
-num_patient = 55;
+start_patient = 3;
+num_patient = 59;
 
 for n = start_patient:num_patient
 

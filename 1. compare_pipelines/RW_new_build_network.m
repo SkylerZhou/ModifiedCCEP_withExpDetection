@@ -8,7 +8,7 @@ function out = RW_new_build_network(out,do_gui)
 if ~exist('do_gui','var'), do_gui = 0; end
 
 %% Parameters
-thresh_amp = 6.0;
+thresh_amp = 4.5;  % would be 6.0; skyler changed to 4.5 for goldstandard test
 thresh_exp = 0.6;
 peak_end_time = 0.3;
 wavs = {'N1','N2'};

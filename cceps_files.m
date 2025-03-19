@@ -8,7 +8,7 @@ locations.loginname = 'skylerz';
 % dir to OUTPUT file from 1st versions
 locations.results_folder = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP/ccep_result/'; 
 % patientOriOut_dir, should modify to the dir under ccep_revised later
-locations.firstOut_dir = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP_Revised/ccep_result/first_pipeline';
+locations.firstOut_dir = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP_Revised/ccep_result/first_pipeline/';
 % locations.firstOut_dir = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP/ccep_result/ori_pipeline';
 
 % dir to INPUT scripts & pt data & eletrode dist info for 3rd version
@@ -19,7 +19,7 @@ locations.mount_dir = '/Volumes/USERS/skylerz/';
 % dir to OUTPUT for 3rd version
 %locations.patientNewOut = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP/ccep_result/new_pipeline_keptonly';
 % patientNewOut
-locations.thirdOut_dir = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP/ccep_result/new_pipeline_keptonly';
+locations.thirdOut_dir = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP_ExpDetection/ccep_result/third_pipeline_threshAmp4.5/';
 % locations.thirdOut_dir = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP_ExpDetection/ccep_result/third_pipeline';
 
 % files containing electrodes distance info

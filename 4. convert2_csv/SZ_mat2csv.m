@@ -7,8 +7,9 @@ locations = cceps_files;
 data_folder = locations.data_folder;
 ptT = readtable([data_folder,'master_pt_list.xlsx']);
 results_folder = locations.results_folder;
-mat_folder = [results_folder,'new_pipeline_keptonly/'];
-csv_folder = [results_folder,'new_pipeline_keptonly_csv/'];
+thirdOut_dir = locations.thirdOut_dir;
+mat_folder = thirdOut_dir;
+csv_folder = [thirdOut_dir,'third_pipeline_csv/'];
 
 num_patient = height(ptT);
 patient_files = string(strcat(ptT.HUPID, '.mat'));
@@ -22,13 +23,13 @@ end
 
 
 %% loop over patients
-for n = 52:52
+for n = 1:num_patient
 
 
     %% load patient out file 
     patient_file = fullfile(mat_folder, patient_files(n));
     temp = load(patient_file);
-    out = temp.out;
+    out = temp.new_out;
     %
 
     %% extract N1, stim, and response channels info 
