@@ -113,7 +113,7 @@ if do_gui == 1
 %% PLot
 figure
 set(gcf,'position',[1 11 1400 900])
-show_network_no_fig(out,1,1,0,save_name)
+show_network_no_fig(out,1,0,0,save_name)
 stim_ch_idx = find(stim_chs);
 response_ch_idx = find(response_chs);
 
