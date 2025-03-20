@@ -11,7 +11,7 @@ locations.firstOut_dir = 'dir to store the output of the 1st pipeline (erin vers
 
 % dir to INPUT scripts & pt data & eletrode dist info for 3rd version
 locations.script_folder = 'dir to your ccep detection script';
-locations.data_folder = 'dir to the pt_mat file';
+locations.data_folder = 'dir to the pt_mat file, can download in https://docs.google.com/spreadsheets/d/1qXCDxgi9CC3ZN--OxNMukBWiGDBvhyxok_9VuzP0CD4/edit?usp=sharing';
 locations.mount_dir = 'dir to your electrode coordinate files';
 
 % dir to OUTPUT for 3rd version
