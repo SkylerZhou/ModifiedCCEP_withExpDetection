@@ -22,7 +22,7 @@ end
 
 
 %% loop over patients
-for n = 43:43
+for n = 1:num_patient
 
 
     %% load patient out file 
@@ -43,22 +43,23 @@ for n = 43:43
 
         % if exist distance info, extract n1 amp and lat, and distance
         if isfield(out.other, 'elecs_dist') 
-            % cp the distance info as the thrid column to n1_adj
-            out.elecs(ich).n1_adj(:,3) = out.other.elecs_dist(:,ich);
-            % extract n1 amp and lat, and distance
-            n1 = out.elecs(ich).n1_adj;
+            % cp the distance info as the 5th column to n1
+            out.elecs(ich).N1(:,5) = out.other.elecs_dist(:,ich);
+            % extract n1 amp and lat, and distance in the 1st, 2nd, and 5th
+            % column
+            n1 = out.elecs(ich).N1(:, [1,2,5]);
             n1_all = [n1_all; n1];
         else
             % else extract only n1 amp and lat
-            n1 = out.elecs(ich).n1_adj;
+            n1 = out.elecs(ich).N1(:, [1,2]);
             n1_all = [n1_all; n1];
 
         end
 
         % extract stim and response labels 
-        stim = repmat(out.chLabels(ich), size(out.elecs(ich).n1_adj,1), 1);
+        stim = repmat(out.chLabels(ich), size(out.elecs(ich).N1,1), 1);
         stim_all = [stim_all; stim];
-        resp = out.chLabels(1: size(out.elecs(ich).n1_adj,1));
+        resp = out.chLabels(1: size(out.elecs(ich).N1,1));
         resp_all = [resp_all; resp];
     end
 
