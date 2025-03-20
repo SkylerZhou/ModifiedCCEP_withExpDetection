@@ -44,6 +44,6 @@ for row=4:4
     
     % use the updated out in new_build_network
     save_name = spread{row,3}{1};
-    new_build_network(out, 1, save_name)
+    SZ_new_build_network(out, 1, save_name)
 end
 

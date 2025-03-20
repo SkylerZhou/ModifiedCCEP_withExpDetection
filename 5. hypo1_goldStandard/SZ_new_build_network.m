@@ -1,7 +1,7 @@
 % to see gui, need to click on a specific x&y, press enter, click outside
 % the figure, and finally press spacebar
 
-function out = new_build_network(out,do_gui,save_name)
+function out = SZ_new_build_network(out,do_gui,save_name)
 
 if ~exist('do_gui','var'), do_gui = 0; end
 if ~exist('save_name','var'), save_name = ''; end
