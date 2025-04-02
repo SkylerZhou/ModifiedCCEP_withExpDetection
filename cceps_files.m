@@ -26,4 +26,8 @@ locations.thirdOut_dir = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP_E
 %locations.coord_folder_dir1 = '/mnt/leif/littlab/data/Human_Data/CNT_iEEG_BIDS/';
 %locations.coord_folder_dir2 = '/mnt/leif/littlab/data/Human_Data/recon/BIDS_penn/';
 %locations.coord_file_dir = '/derivatives/ieeg_recon/module3/';
+
+% dir for hypothesis testing
+locations.sz_ccep_overlap = '/Users/zhouzican/Documents/CNT/DSOSD/SZ_hypo1_data/goldStandard/sz_ccep_overlap.csv';
+
 end
