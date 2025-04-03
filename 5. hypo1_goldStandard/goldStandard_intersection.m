@@ -19,10 +19,12 @@ for i = 1:num_sz
     % with seizure spread channel (i.e. the ccep spread that took the same
     % route as seizure spread and those that had spread to a different
     % region)
-    ccep_overlap_stims = df{i, 7}{1};
-    ccep_overlap_resps = df{i, 8}{1};
-    ccep_only_stims = df{i, 9}{1};
-    ccep_only_resps = df{i, 10}{1};
+    stim_resp.ccep_sig_overlap_stims = df{i, 9}{1};
+    stim_resp.ccep_sig_overlap_resps = df{i, 10}{1};
+    stim_resp.ccep_sig_only_stims = df{i, 11}{1};
+    stim_resp.ccep_sig_only_resps = df{i, 12}{1};
+    stim_resp.ccep_nonsig_overlap_stims = df{i, 13}{1};
+    stim_resp.ccep_nonsig_overlap_resps = df{i, 14}{1};
 
     % retrieve the corresponding patient csv out file
     pt_id = df{i, 1}{1};
@@ -32,7 +34,7 @@ for i = 1:num_sz
     out = temp.new_out;
 
     % func to plot 
-    num_subplots = size(df{i,6}{1}, 2);
-    ccep_assessment(out, num_subplots, pt_id, sz_id, ccep_overlap_stims, ccep_overlap_resps, ccep_only_stims, ccep_only_resps)
+    num_subplots = size(df{i,6}{1}, 2) + size(df{i,14}{1}, 2); % all ccep sig + ccep nonsig overlap 
+    ccep_assessment(out, num_subplots, pt_id, sz_id, stim_resp)
     
 end
