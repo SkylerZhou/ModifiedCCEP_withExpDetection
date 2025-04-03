@@ -1,6 +1,99 @@
 function ccep_assessment(out, num_subplots, pt_id, sz_id, stim_resp)
 
+%% Parameters for Plotting 
+n1_time = [11e-3 50e-3];
+n2_time = [50e-3 300e-3];
+zoom_times = [-300e-3 300e-3];
+zoom_factor = 2;
+which_n = 1;
+which = out.rejection_details(which_n).which;
 
+% Extract fields from stim_resp for clarity
+sig_overlap_stims = stim_resp.ccep_sig_overlap_stims;
+sig_overlap_resps = stim_resp.ccep_sig_overlap_resps;
+sig_only_stims = stim_resp.ccep_sig_only_stims;
+sig_only_resps = stim_resp.ccep_sig_only_resps;
+nonsig_overlap_stims = stim_resp.ccep_nonsig_overlap_stims;
+nonsig_overlap_resps = stim_resp.ccep_nonsig_overlap_resps;
+
+%% Create a New Figure
+fig = figure('Color', 'w', 'Visible', 'on');
+
+% Determine Grid Layout for Tiles
+n_per_line = ceil(sqrt(num_subplots));  % Number of columns in the grid
+n_lines = ceil(num_subplots / n_per_line);  % Number of rows in the grid
+t = tiledlayout(n_lines, n_per_line, 'TileSpacing', 'Compact', 'Padding', 'Compact');
+
+% Determine the Number of Pairs in Each Group
+num_sig_overlap = numel(sig_overlap_stims);
+num_sig_only = numel(sig_only_stims);
+num_nonsig_overlap = numel(nonsig_overlap_stims);
+
+% Initialize counters for each group
+sig_overlap_idx = 1;
+sig_only_idx = 1;
+nonsig_overlap_idx = 1;
+
+%% Loop Through Each Tile and Plot Using the Helper Function
+for i = 1:num_subplots
+    ax = nexttile(t);
+    ax.FontSize = 6;
+    hold(ax, 'on');
+    
+    % Subplot of Sig CCEP Overlap Pair
+    if sig_overlap_idx <= num_sig_overlap
+        title_str = plot_ccep_pair(ax, out, sig_overlap_stims{sig_overlap_idx}, sig_overlap_resps{sig_overlap_idx}, ...
+            [0.8500 0.3250 0.0980], n1_time, n2_time, zoom_times, zoom_factor, which);
+        sig_overlap_idx = sig_overlap_idx + 1;
+
+    % Subplot of Sig CCEP Only Pair 
+    elseif sig_overlap_idx > num_sig_overlap && sig_only_idx <= num_sig_only
+        title_str = plot_ccep_pair(ax, out, sig_only_stims{sig_only_idx}, sig_only_resps{sig_only_idx}, ...
+            [0.4660 0.6740 0.1880], n1_time, n2_time, zoom_times, zoom_factor, which);
+        sig_only_idx = sig_only_idx + 1;
+    
+    % Subplot of NonSig CCEP Overlap Pair with blue-like color
+    else
+        title_str = plot_ccep_pair(ax, out, nonsig_overlap_stims{nonsig_overlap_idx}, nonsig_overlap_resps{nonsig_overlap_idx}, ...
+            [0 0.4470 0.7410], n1_time, n2_time, zoom_times, zoom_factor, which);
+        nonsig_overlap_idx = nonsig_overlap_idx + 1;
+    end
+    
+    % Add title and grid for each tile
+    title(ax, title_str, 'Interpreter', 'none', 'FontSize', 6);
+    grid(ax, 'on');
+end
+
+%% Remove Unused Tiles (if any)
+totalTiles = n_lines * n_per_line;
+if totalTiles > num_subplots
+    for j = (num_subplots+1):totalTiles
+        axEmpty = nexttile(t);
+        axis(axEmpty, 'off');
+    end
+end
+
+% Add a Main Figure Title
+sgtitle_str = sprintf('CCEP Assessment for Patient %s with Seizure ID %s.', pt_id, sz_id);
+sgtitle(fig, sgtitle_str, 'FontSize', 10, 'FontWeight', 'bold', 'Interpreter', 'none');
+
+% Adjust Figure Layout
+set(fig, 'Units', 'normalized', 'Position', [0.05 0.05 1.0 1.0]);
+
+% Save the Figure as PNG to a Specific Folder
+output_folder = '/Users/zhouzican/Documents/CNT/DSOSD/SZ_hypo1_data/ccep_assessment';
+if ~exist(output_folder, 'dir')
+    mkdir(output_folder);
+end
+filename = fullfile(output_folder, sprintf('CCEP_Assessment_Patient_%s_SZ_%s.png', pt_id, sz_id));
+saveas(fig, filename);
+
+end
+
+
+%function ccep_assessment(out, num_subplots, pt_id, sz_id, stim_resp)
+
+%{
 %% Parameters for Plotting 
 n1_time = [11e-3 50e-3];     
 n2_time = [50e-3 300e-3];     
@@ -245,3 +338,4 @@ filename = fullfile(output_folder, sprintf('CCEP_Assessment_Patient_%s_SZ_%s.png
 saveas(fig, filename);
 
 end
+%}
