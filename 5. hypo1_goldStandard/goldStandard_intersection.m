@@ -13,7 +13,7 @@ num_sz = height(df);
 num_pt = length(unique(df{:,1}));
 
 % for each row/seizure in sz_ccep_overlap
-for i = 10:10
+for i = 1:num_sz
 
     % obtain the set of ccep spread channels that had & hadn't intersect
     % with seizure spread channel (i.e. the ccep spread that took the same

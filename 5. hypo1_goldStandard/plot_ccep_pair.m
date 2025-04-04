@@ -1,4 +1,4 @@
-function title_str = plot_ccep_pair(ax, out, stim_ch, resp_ch, line_color, n1_time, n2_time, zoom_times, zoom_factor, which, nonsig_overlap_idx)
+function plot_ccep_pair(ax, out, stim_ch, resp_ch, line_color, n1_time, n2_time, zoom_times, zoom_factor, which, nonsig_overlap_idx)
 
 %% extract data corresponding to the specific stim and resp
 row = find(strcmp(out.bipolar_labels, stim_ch));
@@ -16,6 +16,8 @@ wav_time = convert_indices_to_times(wav_idx, out.other.stim.fs, times(1));
 n1_idx = floor(n1_time * out.other.stim.fs);
 n2_idx = floor(n2_time * out.other.stim.fs);
 temp_n1_idx = n1_idx + stim_idx - 1;
+
+
 
 
 %% get why it was rejected for the nonsig signals 
@@ -49,10 +51,14 @@ if ~isnan(nonsig_overlap_idx) % if we have started to plot the nonsig signals
      end
 end
 
+%% for text 
+stim_label = num2str(stim_ch);
+resp_label = num2str(resp_ch);
+stim_start = out.other.periods(row).start_time;
 
 %% plot 
 plot(ax, eeg_times, avg, 'Color', line_color, 'LineWidth', 1.5);
-title_str = sprintf('Stim %s, Resp %s', num2str(stim_ch), num2str(resp_ch));
+%title_str = sprintf('Stim %s, Resp %s', num2str(stim_ch), num2str(resp_ch));
 hold(ax, 'on');
 
 % N1 annotation
@@ -84,13 +90,23 @@ plot(ax, [0 0], ylim(ax), 'k--');
 
 % for the nonsig subplots, specify reasons of rejection
 if ~isnan(nonsig_overlap_idx)
-    ax_xlim = xlim(ax);
-    ax_ylim = ylim(ax);
-    x_text = ax_xlim(1) + 0.02 * (ax_xlim(2)-ax_xlim(1));
-    y_text = ax_ylim(2) - 0.05 * (ax_ylim(2)-ax_ylim(1));
-    text(ax, x_text, y_text, sprintf('Rejected: %s', why), 'FontSize', 5, 'Color', 'k', 'HorizontalAlignment', 'left', 'BackgroundColor', 'w');
+    %ax_xlim = xlim(ax);
+    %ax_ylim = ylim(ax);
+    %x_text = ax_xlim(1) + 0.02 * (ax_xlim(2)-ax_xlim(1));
+    %y_text = ax_ylim(2) - 0.05 * (ax_ylim(2)-ax_ylim(1));
+    xl = xlim;
+    yl = ylim;
+    text(ax, xl(1),yl(2), sprintf('Stim: %s\nResponse: %s\nStart: %.2f s\nRejected: %s',stim_label,resp_label,stim_start,why),...
+        'FontSize', 5, ...
+        'horizontalalignment','left',...
+        'verticalalignment','top');
 else
-    
+    xl = xlim;
+    yl = ylim;
+    text(ax, xl(1),yl(2), sprintf('Stim: %s\nResponse: %s\nStart: %.2f s',stim_label,resp_label,stim_start),...
+        'FontSize', 5, ...
+        'horizontalalignment','left',...
+        'verticalalignment','top');
 end
 
 end

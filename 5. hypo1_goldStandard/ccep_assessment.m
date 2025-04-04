@@ -42,19 +42,19 @@ for i = 1:num_subplots
     
     % Subplot of Sig CCEP Overlap Pair
     if sig_overlap_idx <= num_sig_overlap
-        title_str = plot_ccep_pair(ax, out, sig_overlap_stims{sig_overlap_idx}, sig_overlap_resps{sig_overlap_idx}, ...
+        plot_ccep_pair(ax, out, sig_overlap_stims{sig_overlap_idx}, sig_overlap_resps{sig_overlap_idx}, ...
             [0.8500 0.3250 0.0980], n1_time, n2_time, zoom_times, zoom_factor, which, nan);
         sig_overlap_idx = sig_overlap_idx + 1;
 
     % Subplot of Sig CCEP Only Pair 
     elseif sig_overlap_idx > num_sig_overlap && sig_only_idx <= num_sig_only
-        title_str = plot_ccep_pair(ax, out, sig_only_stims{sig_only_idx}, sig_only_resps{sig_only_idx}, ...
+        plot_ccep_pair(ax, out, sig_only_stims{sig_only_idx}, sig_only_resps{sig_only_idx}, ...
             [0.4660 0.6740 0.1880], n1_time, n2_time, zoom_times, zoom_factor, which, nan);
         sig_only_idx = sig_only_idx + 1;
     
     % Subplot of NonSig CCEP Overlap Pair with blue-like color
     else
-        title_str = plot_ccep_pair(ax, out, nonsig_overlap_stims{nonsig_overlap_idx}, nonsig_overlap_resps{nonsig_overlap_idx}, ...
+        plot_ccep_pair(ax, out, nonsig_overlap_stims{nonsig_overlap_idx}, nonsig_overlap_resps{nonsig_overlap_idx}, ...
             [0 0.4470 0.7410], n1_time, n2_time, zoom_times, zoom_factor, which, nonsig_overlap_idx);
         nonsig_overlap_idx = nonsig_overlap_idx + 1;
     end
