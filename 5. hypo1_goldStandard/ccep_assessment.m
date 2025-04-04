@@ -20,8 +20,8 @@ nonsig_overlap_resps = stim_resp.ccep_nonsig_overlap_resps;
 fig = figure('Color', 'w', 'Visible', 'on');
 
 % Determine Grid Layout for Tiles
-n_per_line = ceil(sqrt(num_subplots));  % Number of columns in the grid
-n_lines = ceil(num_subplots / n_per_line);  % Number of rows in the grid
+n_per_line = ceil(sqrt(num_subplots));  
+n_lines = ceil(num_subplots / n_per_line); 
 t = tiledlayout(n_lines, n_per_line, 'TileSpacing', 'Compact', 'Padding', 'Compact');
 
 % Determine the Number of Pairs in Each Group
@@ -34,7 +34,7 @@ sig_overlap_idx = 1;
 sig_only_idx = 1;
 nonsig_overlap_idx = 1;
 
-%% Loop Through Each Tile and Plot Using the Helper Function
+%% Loop Through Each Tile and Plot 
 for i = 1:num_subplots
     ax = nexttile(t);
     ax.FontSize = 6;
@@ -43,28 +43,28 @@ for i = 1:num_subplots
     % Subplot of Sig CCEP Overlap Pair
     if sig_overlap_idx <= num_sig_overlap
         title_str = plot_ccep_pair(ax, out, sig_overlap_stims{sig_overlap_idx}, sig_overlap_resps{sig_overlap_idx}, ...
-            [0.8500 0.3250 0.0980], n1_time, n2_time, zoom_times, zoom_factor, which);
+            [0.8500 0.3250 0.0980], n1_time, n2_time, zoom_times, zoom_factor, which, nan);
         sig_overlap_idx = sig_overlap_idx + 1;
 
     % Subplot of Sig CCEP Only Pair 
     elseif sig_overlap_idx > num_sig_overlap && sig_only_idx <= num_sig_only
         title_str = plot_ccep_pair(ax, out, sig_only_stims{sig_only_idx}, sig_only_resps{sig_only_idx}, ...
-            [0.4660 0.6740 0.1880], n1_time, n2_time, zoom_times, zoom_factor, which);
+            [0.4660 0.6740 0.1880], n1_time, n2_time, zoom_times, zoom_factor, which, nan);
         sig_only_idx = sig_only_idx + 1;
     
     % Subplot of NonSig CCEP Overlap Pair with blue-like color
     else
         title_str = plot_ccep_pair(ax, out, nonsig_overlap_stims{nonsig_overlap_idx}, nonsig_overlap_resps{nonsig_overlap_idx}, ...
-            [0 0.4470 0.7410], n1_time, n2_time, zoom_times, zoom_factor, which);
+            [0 0.4470 0.7410], n1_time, n2_time, zoom_times, zoom_factor, which, nonsig_overlap_idx);
         nonsig_overlap_idx = nonsig_overlap_idx + 1;
     end
     
     % Add title and grid for each tile
-    title(ax, title_str, 'Interpreter', 'none', 'FontSize', 6);
+    %title(ax, title_str, 'Interpreter', 'none', 'FontSize', 6);
     grid(ax, 'on');
 end
 
-%% Remove Unused Tiles (if any)
+%% Remove Unused Tiles 
 totalTiles = n_lines * n_per_line;
 if totalTiles > num_subplots
     for j = (num_subplots+1):totalTiles

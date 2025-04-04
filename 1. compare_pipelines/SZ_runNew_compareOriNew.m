@@ -30,8 +30,8 @@ end
 
 
 %% loop over patients
-start_patient = 41;
-num_patient = 41;
+start_patient = 1;
+num_patient = 1;
 
 for n = start_patient:num_patient
 
