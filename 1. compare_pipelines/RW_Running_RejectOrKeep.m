@@ -96,9 +96,9 @@ for ich = 1:n
             out.rejection_details(2).reject.keep(stim_channel,response_channel) = 0;
             out.rejection_details(1).reject.all_bad(stim_channel,response_channel) = 1;
             out.rejection_details(2).reject.all_bad(stim_channel,response_channel) = 1;
-            % -- skyler zhou added on Apr 6, 2025 ---
-            n1(jch,:) = [nan nan]; % so that bad are nan instead of zeros
-            n2(jch,:) = [nan nan];
+            % -- skyler zhou added on 2025/04/06 ---
+            n1(jch,:) = [nan nan nan nan]; % so that bad are nan instead of zeros
+            n2(jch,:) = [nan nan nan nan];
             % ---------------------
             continue
         end

@@ -39,11 +39,14 @@ which = out.rejection_details(which_n).which;
 sig_avg = out.rejection_details(which_n).reject.sig_avg;
 pre_thresh = out.rejection_details(which_n).reject.pre_thresh;
 at_thresh = out.rejection_details(which_n).reject.at_thresh;
-no_both = out.rejection_details(which_n).reject.no_both;
+% sz commented out 2025/04/06
+%no_both = out.rejection_details(which_n).reject.no_both; 
 keep = out.rejection_details(which_n).reject.keep;
 exp = out.rejection_details(which_n).reject.exp;
 
-any_reject = sig_avg == 1| pre_thresh == 1 | at_thresh == 1 | no_both == 1 | exp ==1 ;
+% sz commented out 2025/04/06
+% any_reject = sig_avg == 1| pre_thresh == 1 | at_thresh == 1 | no_both == 1 | exp ==1 ;
+any_reject = sig_avg == 1| pre_thresh == 1 | at_thresh == 1 | exp ==1 ;
 
 % Calculate total numbers
 nkeep = sum(keep(:) == 1);
@@ -110,11 +113,12 @@ for j = 1:2
                 % end
                 why = 'threshold';
             end
-            if no_both(row,col) == 1
-                if isnan(why)
-                    why = 'no both';
-                end
-            end
+            % sz commented out 2025/04/06
+            %if no_both(row,col) == 1
+                %if isnan(why)
+                    %why = 'no both';
+                %end
+            %end
             if exp(row,col) == 1
                 if isnan(why)
                     why = 'exponential';

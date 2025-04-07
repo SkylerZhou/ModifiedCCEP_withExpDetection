@@ -94,7 +94,7 @@ for w = 1:length(wavs)
     details.reject.at_thresh = nan(length(elecs),length(elecs)); % identifies if signals meet the thresh_amp
     details.reject.keep = nan(length(elecs),length(elecs));
     details.reject.no_n1 = nan(length(elecs),length(elecs));
-    details.reject.no_both = nan(length(elecs),length(elecs));
+    %details.reject.no_both = nan(length(elecs),length(elecs));
     %details.reject.deriv = nan(length(elecs),length(elecs));
     details.reject.exp = nan(length(elecs),length(elecs));
 
@@ -156,6 +156,9 @@ end
 n = size(out.chLabels,1);
 for ich=1:n
     for jch=1:n
+
+        %{
+        % sz commented out 2025/04/06 to remove no_both
         if size(out.elecs(ich).N1,1) >=2
             if ~isnan(out.elecs(ich).N1(jch,1)) && isnan(out.elecs(ich).N2(jch,1))   
                 out.rejection_details(1).reject.keep(ich,jch) = 0;
@@ -164,6 +167,7 @@ for ich=1:n
                 out.rejection_details(2).reject.no_both(ich,jch) = 1;
             end
         end
+        %}
         
         %{
         % set 1/10 of the max of the de-trended averages as the threshold

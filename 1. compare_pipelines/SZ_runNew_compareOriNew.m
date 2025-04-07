@@ -31,7 +31,7 @@ end
 
 %% loop over patients
 start_patient = 1;
-num_patient = 1;
+num_patient = height(ptT);
 
 for n = start_patient:num_patient
 
@@ -65,15 +65,15 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% total number of keeps remained after running original and new algorithms
 % initialize arrays to store 
-arr_patients = cell(58, 1);
-arr_sum_keep_ori = zeros(58, 1);
-arr_sum_keep_new = zeros(58, 1);
-arr_total = zeros(58, 1);
+num_patient = height(ptT);
+arr_patients = cell(num_patient, 1);
+arr_sum_keep_ori = zeros(num_patient, 1);
+arr_sum_keep_new = zeros(num_patient, 1);
+arr_total = zeros(num_patient, 1);
 
 
 %% loop over to retrieve patient's data
 start_patient = 1;
-num_patient = 58;
 which_n = 1;
 
 for n = start_patient:num_patient
@@ -105,10 +105,11 @@ for n = start_patient:num_patient
     sig_avg_new = new_out.rejection_details(which_n).reject.sig_avg;
     pre_thresh_new = new_out.rejection_details(which_n).reject.pre_thresh;
     at_thresh_new = new_out.rejection_details(which_n).reject.at_thresh;
-    no_both_new = new_out.rejection_details(which_n).reject.no_both;
+    %no_both_new = new_out.rejection_details(which_n).reject.no_both;
     exp_new = new_out.rejection_details(which_n).reject.exp;
     
-    any_reject_new = sig_avg_new == 1 | pre_thresh_new == 1 | at_thresh_new == 1 | no_both_new == 1 | exp_new == 1;
+    any_reject_new = sig_avg_new == 1 | pre_thresh_new == 1 | at_thresh_new == 1 | exp_new == 1;
+    %any_reject_new = sig_avg_new == 1 | pre_thresh_new == 1 | at_thresh_new == 1 | no_both_new == 1 | exp_new == 1;
 
     sum_keep_new = sum(keep_new(:) == 1);
     sum_reject_new = sum(any_reject_new(:) == 1);
