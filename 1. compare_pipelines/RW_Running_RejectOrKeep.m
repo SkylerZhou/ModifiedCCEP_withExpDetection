@@ -89,12 +89,17 @@ for ich = 1:n
         eeg = out.elecs(ich).detrend_filt_avgs(:,jch);
         stim_channel = ich;
         response_channel = jch;
+        
         % skip if all trials are bad
         if out.elecs(ich).all_bad(jch) == 1
             out.rejection_details(1).reject.keep(stim_channel,response_channel) = 0;
             out.rejection_details(2).reject.keep(stim_channel,response_channel) = 0;
             out.rejection_details(1).reject.all_bad(stim_channel,response_channel) = 1;
             out.rejection_details(2).reject.all_bad(stim_channel,response_channel) = 1;
+            % -- skyler zhou added on Apr 6, 2025 ---
+            n1(jch,:) = [nan nan]; % so that bad are nan instead of zeros
+            n2(jch,:) = [nan nan];
+            % ---------------------
             continue
         end
    
