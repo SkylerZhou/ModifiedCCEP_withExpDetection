@@ -29,7 +29,7 @@ for n = 1:num_patient
     %% load patient out file 
     patient_file = fullfile(mat_folder, patient_files(n));
     temp = load(patient_file);
-    out = temp.new_out;
+    out = temp.out;
     %
 
     %% extract N1, stim, and response channels info 

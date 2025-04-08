@@ -31,7 +31,7 @@ for i = 1:num_sz
     sz_id = df{i, 2}{1};
     patient_file = fullfile(thirdOut_dir, [pt_id, '.mat']);
     temp = load(patient_file);
-    out = temp.new_out;
+    out = temp.out;
 
     % func to plot 
     num_subplots = size(df{i,6}{1}, 2) + size(df{i,14}{1}, 2); % all ccep sig + ccep nonsig overlap 

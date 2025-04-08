@@ -25,7 +25,7 @@ if ~isnan(nonsig_overlap_idx) % if we have started to plot the nonsig signals
     sig_avg = out.rejection_details(which_n).reject.sig_avg;
     pre_thresh = out.rejection_details(which_n).reject.pre_thresh;
     at_thresh = out.rejection_details(which_n).reject.at_thresh;
-    no_both = out.rejection_details(which_n).reject.no_both;
+    %no_both = out.rejection_details(which_n).reject.no_both;
     exp = out.rejection_details(which_n).reject.exp;
 
     why = nan;
@@ -39,17 +39,20 @@ if ~isnan(nonsig_overlap_idx) % if we have started to plot the nonsig signals
     if at_thresh(row,col) == 1      
         why = 'threshold';
     end
-    if no_both(row,col) == 1
-        if isnan(why)
-            why = 'no both';
-        end
-    end
     if exp(row,col) == 1
         if isnan(why)
             why = 'exponential';
         end
-     end
+    end
 end
+    %{
+    %if no_both(row,col) == 1
+    %    if isnan(why)
+    %        why = 'no both';
+    %    end
+    %end
+    %}
+
 
 %% for text 
 stim_label = num2str(stim_ch);
@@ -58,11 +61,10 @@ stim_start = out.other.periods(row).start_time;
 
 %% plot 
 plot(ax, eeg_times, avg, 'Color', line_color, 'LineWidth', 1.5);
-%title_str = sprintf('Stim %s, Resp %s', num2str(stim_ch), num2str(resp_ch));
 hold(ax, 'on');
 
 % N1 annotation
-if (out.elecs(row).N1(col, 1)) ~= 0
+if ~isnan(out.elecs(row).N1(col, 1)) 
     x = out.elecs(row).N1(col, 2) / out.other.stim.fs;
     x_indx = round(out.elecs(row).N1(col, 2) + stim_idx + 1);
     y = out.elecs(row).detrend_filt_avgs(x_indx, col);
@@ -90,10 +92,6 @@ plot(ax, [0 0], ylim(ax), 'k--');
 
 % for the nonsig subplots, specify reasons of rejection
 if ~isnan(nonsig_overlap_idx)
-    %ax_xlim = xlim(ax);
-    %ax_ylim = ylim(ax);
-    %x_text = ax_xlim(1) + 0.02 * (ax_xlim(2)-ax_xlim(1));
-    %y_text = ax_ylim(2) - 0.05 * (ax_ylim(2)-ax_ylim(1));
     xl = xlim;
     yl = ylim;
     text(ax, xl(1),yl(2), sprintf('Stim: %s\nResponse: %s\nStart: %.2f s\nRejected: %s',stim_label,resp_label,stim_start,why),...

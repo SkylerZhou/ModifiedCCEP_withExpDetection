@@ -93,7 +93,7 @@ for w = 1:length(wavs)
     details.reject.pre_thresh = nan(length(elecs),length(elecs)); % identifies signals below the threshold before applying thresh_amp?
     details.reject.at_thresh = nan(length(elecs),length(elecs)); % identifies if signals meet the thresh_amp
     details.reject.keep = nan(length(elecs),length(elecs));
-    details.reject.no_n1 = nan(length(elecs),length(elecs));
+    %details.reject.no_n1 = nan(length(elecs),length(elecs));
     %details.reject.no_both = nan(length(elecs),length(elecs));
     %details.reject.deriv = nan(length(elecs),length(elecs));
     details.reject.exp = nan(length(elecs),length(elecs));
@@ -115,7 +115,7 @@ for w = 1:length(wavs)
             details.reject.pre_thresh(ich,:) = isnan(elecs(ich).(which)(:,1)) & ~all_bad;
             details.reject.at_thresh(ich,:) = elecs(ich).(which)(:,1) < thresh_amp;
             details.reject.keep(ich,:) = elecs(ich).(which)(:,1) >= thresh_amp;
-            details.reject.no_n1(ich,:) = isnan(elecs(ich).(which)(:,1));
+            %details.reject.no_n1(ich,:) = isnan(elecs(ich).(which)(:,1));
             
             %{
             all_nans = (sum(~isnan(elecs(ich).avg),1) == 0)';

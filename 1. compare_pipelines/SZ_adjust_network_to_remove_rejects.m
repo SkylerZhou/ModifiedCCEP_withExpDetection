@@ -44,7 +44,7 @@ for j = 1:2
     meet_criteria = find(keep==1);
     [row,col] = ind2sub(size(keep),meet_criteria);  % obtain the linear indices of all the keeps 
     %meet_criteria(keep_chs(row) == false) = []; % filter out the keeps that are recorded with the bad channels(not sure)
-    col(keep_chs(row) == false) = NaN;
+    %col(keep_chs(row) == false) = NaN;
     %meet_criteria(keep_chs(col) == false) = [];
 
     all_stim_idx = unique(row);

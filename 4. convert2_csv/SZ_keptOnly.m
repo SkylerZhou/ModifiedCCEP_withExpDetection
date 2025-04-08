@@ -1,4 +1,4 @@
-overwrite = 0;
+overwrite = 1;
 
 %% prep 
 % load directories to loop over patients
@@ -15,7 +15,7 @@ patient_ids = string(ptT.HUPID(1:num_patient));
 
 
 %% loop over patients
-for n = 6:6
+for n = 1:num_patient
 
     % load patient out file 
     patient_file = fullfile(thirdOut_dir, patient_files(n));
