@@ -44,7 +44,7 @@ for n = start_patient:num_patient
     new_out = RW_Running_RejectOrKeep(new_out); % all 0
     new_out = RW_new_build_network(new_out); % starts to have 1 
     %new_out = RW_require_both_Ns(new_out);
-    new_out = SZ_adjust_network_to_remove_rejects(new_out); 
+    %new_out = SZ_adjust_network_to_remove_rejects(new_out); 
 
     % save the patient output file
     out_file_name = patient_files(n);
