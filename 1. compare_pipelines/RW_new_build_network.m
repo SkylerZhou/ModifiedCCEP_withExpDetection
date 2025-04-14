@@ -202,11 +202,13 @@ for ich=1:n
         
         % reject ccep if is 0 in keep_chs
         if size(out.elecs(ich).avg,1) >= 1
-            if ~isnan(out.elecs(ich).N1(jch,1))
-                out.rejection_details(1).reject.keep(:,~response_chs) = 0;
-                out.rejection_details(2).reject.keep(:,~response_chs) = 0;
-                out.rejection_details(1).reject.ignore_ch(:,response_chs) = 1;
-                out.rejection_details(2).reject.ignore_ch(:,response_chs) = 1;
+            if out.elecs(ich).N1(jch,1) > 0
+                if response_chs(jch) == 0
+                    out.rejection_details(1).reject.keep(ich,jch) = 0;
+                    out.rejection_details(2).reject.keep(ich,jch) = 0;
+                    out.rejection_details(1).reject.ignore_ch(ich,jch) = 1;
+                    out.rejection_details(2).reject.ignore_ch(ich,jch) = 1;
+                end
             end
         end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      

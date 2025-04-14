@@ -46,8 +46,6 @@ keep = out.rejection_details(which_n).reject.keep;
 exp = out.rejection_details(which_n).reject.exp;
 ignore_ch = out.rejection_details(which_n).reject.ignore_ch;
 
-% sz commented out 2025/04/06
-% any_reject = sig_avg == 1| pre_thresh == 1 | at_thresh == 1 | no_both == 1 | exp ==1 ;
 any_reject = sig_avg == 1| pre_thresh == 1 | at_thresh == 1 | exp ==1 | ignore_ch==1 ;
 
 % Calculate total numbers
@@ -83,7 +81,6 @@ for j = 1:2
     set(gcf,'position',[100 100 1200 1000])
     t = tiledlayout(n_lines,n_per_line,'padding','compact','tilespacing','compact');
     
- 
     % Pick a random N
     to_plot = randsample(meet_criteria,n_to_plot); % randomly select 25 from the coordinates of all the keeps/rejects that meets the criteria 
     

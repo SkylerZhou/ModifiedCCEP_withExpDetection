@@ -33,7 +33,7 @@ end
 start_patient = 1;
 num_patient = height(ptT);
 
-for n = start_patient:num_patient
+for n = start_patient:1
 
     patient_file = fullfile(firstOut_dir, patient_files(n));
     out = load(patient_file);
