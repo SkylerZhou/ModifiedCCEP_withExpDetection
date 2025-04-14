@@ -97,6 +97,7 @@ for w = 1:length(wavs)
     %details.reject.no_both = nan(length(elecs),length(elecs));
     %details.reject.deriv = nan(length(elecs),length(elecs));
     details.reject.exp = nan(length(elecs),length(elecs));
+    details.reject.ignore_ch = nan(length(elecs),length(elecs)); % added on 04/14/2025 to keep track of get_chs_to_ignore
 
     % for each of N1 and N2 wave, loop over each electrode
     for ich = 1:length(elecs)
@@ -143,7 +144,7 @@ for w = 1:length(wavs)
     
     %% Add this to array
     if w == 1
-        % SZ: changed on Mar 5th, 2025 to try to fix the stim_chs issues 
+        % SZ: changed on 2025.03.05 to fix the stim_chs issues 
         % out.stim_chs = stim_chs;
         out.response_chs = response_chs;
     end
@@ -198,8 +199,17 @@ for ich=1:n
                 end
             end           
         end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
+        % reject ccep if is 0 in keep_chs
+        if size(out.elecs(ich).avg,1) >= 1
+            if ~isnan(out.elecs(ich).N1(jch,1))
+                out.rejection_details(1).reject.keep(:,~response_chs) = 0;
+                out.rejection_details(2).reject.keep(:,~response_chs) = 0;
+                out.rejection_details(1).reject.ignore_ch(:,response_chs) = 1;
+                out.rejection_details(2).reject.ignore_ch(:,response_chs) = 1;
+            end
+        end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      
 
     end
 end

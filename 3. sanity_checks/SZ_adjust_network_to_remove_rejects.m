@@ -1,5 +1,6 @@
 %% Aim: for the rejected signal, replace amplitude and latencies of N1 and N2 with NaN. 
 % Would be used during sanity checks (correlation between amplitude and latencies & correlation between amplitude and distance)
+
 function out = SZ_adjust_network_to_remove_rejects(out)
 
 %% Pre-allocate n1_adj and n2_adj matrix with nan
@@ -37,15 +38,20 @@ for j = 1:2
     at_thresh = out.rejection_details(which_n).reject.at_thresh;
     keep = out.rejection_details(which_n).reject.keep;
     exp = out.rejection_details(which_n).reject.exp;
+    ignore_ch = out.rejection_details(which_n).reject.ignore_ch;
 
-    any_reject = sig_avg == 1| pre_thresh == 1 | at_thresh == 1 | exp ==1 ;
+    any_reject = sig_avg == 1| pre_thresh == 1 | at_thresh == 1 | exp ==1 | ignore_ch ==1 ;
 
-    %% Restrict to those on keep chs
+
+    %% Restrict to those where rejection_details.keep == 1
     meet_criteria = find(keep==1);
     [row,col] = ind2sub(size(keep),meet_criteria);  % obtain the linear indices of all the keeps 
+    % sz comment out on 04/14/2025 with the addition of
+    % rejection_details.ignore_ch
     %meet_criteria(keep_chs(row) == false) = []; % filter out the keeps that are recorded with the bad channels(not sure)
     %col(keep_chs(row) == false) = NaN;
     %meet_criteria(keep_chs(col) == false) = [];
+    %}
 
     all_stim_idx = unique(row);
     for i = 1:length(all_stim_idx)

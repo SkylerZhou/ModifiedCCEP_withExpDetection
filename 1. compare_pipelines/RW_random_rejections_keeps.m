@@ -17,6 +17,7 @@ pwfile = locations.pwfile;
 loginname = locations.loginname;
 script_folder = locations.script_folder;
 results_folder = locations.results_folder;
+thirdOut_dir = locations.thirdOut_dir;
 
 % add paths
 addpath(genpath(script_folder));
@@ -24,7 +25,7 @@ if isempty(locations.ieeg_folder) == 0
     addpath(genpath(locations.ieeg_folder));
 end
 name = out.name;
-out_folder = [results_folder,'new_validation/',name,'/'];
+out_folder = [thirdOut_dir,'validation/',name,'/'];
 if ~exist(out_folder,'dir')
     mkdir(out_folder)
 end
@@ -43,10 +44,11 @@ at_thresh = out.rejection_details(which_n).reject.at_thresh;
 %no_both = out.rejection_details(which_n).reject.no_both; 
 keep = out.rejection_details(which_n).reject.keep;
 exp = out.rejection_details(which_n).reject.exp;
+ignore_ch = out.rejection_details(which_n).reject.ignore_ch;
 
 % sz commented out 2025/04/06
 % any_reject = sig_avg == 1| pre_thresh == 1 | at_thresh == 1 | no_both == 1 | exp ==1 ;
-any_reject = sig_avg == 1| pre_thresh == 1 | at_thresh == 1 | exp ==1 ;
+any_reject = sig_avg == 1| pre_thresh == 1 | at_thresh == 1 | exp ==1 | ignore_ch==1 ;
 
 % Calculate total numbers
 nkeep = sum(keep(:) == 1);
@@ -69,11 +71,12 @@ for j = 1:2
     
     meet_criteria = find(thing==1);
 
+    % sz comment out on 04/14/2025 with the addition of rejection_details.ignore_ch
     % Restrict to those on keep chs
-    [row,col] = ind2sub(size(keep),meet_criteria);  % obtain the linear indices of all the keeps 
-    meet_criteria(keep_chs(row) == false) = []; % filter out the keeps that are recorded with the bad channels(not sure)
-    col(keep_chs(row) == false) = [];
-    meet_criteria(keep_chs(col) == false) = [];
+    %[row,col] = ind2sub(size(keep),meet_criteria);  % obtain the linear indices of all the keeps 
+    %meet_criteria(keep_chs(row) == false) = []; % filter out the keeps that are recorded with the bad channels(not sure)
+    %col(keep_chs(row) == false) = [];
+    %meet_criteria(keep_chs(col) == false) = [];
     
     % Initialize figure
     figure
@@ -124,6 +127,11 @@ for j = 1:2
                     why = 'exponential';
                 end
             end
+            if ignore_ch(row,col) == 1
+                if isnan(why)
+                    why = 'ignore_ch';
+                end
+            end           
         end
         
         % Get the waveform
