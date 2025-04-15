@@ -71,10 +71,10 @@ for j = 1:2
 
     % sz comment out on 04/14/2025 with the addition of rejection_details.ignore_ch
     % Restrict to those on keep chs
-    %[row,col] = ind2sub(size(keep),meet_criteria);  % obtain the linear indices of all the keeps 
-    %meet_criteria(keep_chs(row) == false) = []; % filter out the keeps that are recorded with the bad channels(not sure)
-    %col(keep_chs(row) == false) = [];
-    %meet_criteria(keep_chs(col) == false) = [];
+    [row,col] = ind2sub(size(keep),meet_criteria);  % obtain the linear indices of all the keeps 
+    meet_criteria(keep_chs(row) == false) = []; % filter out the keeps that are recorded with the bad channels(not sure)
+    col(keep_chs(row) == false) = [];
+    meet_criteria(keep_chs(col) == false) = [];
     
     % Initialize figure
     figure
