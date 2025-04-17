@@ -11,10 +11,10 @@ locations.results_folder = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP
 locations.firstOut_dir = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP_Revised/ccep_result/first_pipeline/';
 % locations.firstOut_dir = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP/ccep_result/ori_pipeline';
 
-% dir to INPUT scripts & pt data & eletrode dist info for 3rd version
+% dir to INPUT scripts & patient info & eletrode dist data for 3rd version
 locations.script_folder = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP_ExpDetection/ccep_script/';
 locations.data_folder = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP_ExpDetection/pt_mat/';
-locations.mount_dir = '/Volumes/USERS/skylerz/';
+locations.mount_dir = '/Volumes/USERS/skylerz/coor_data/coor_files/'; % elec distance data
 
 % dir to OUTPUT for 3rd version
 %locations.patientNewOut = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP/ccep_result/new_pipeline_keptonly';
