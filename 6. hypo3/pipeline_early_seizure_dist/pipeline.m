@@ -22,7 +22,7 @@ patient_ids = string(ptT.HUPID(1:num_patient));
 
 
 %% loop over patients
-for n = 35:num_patient
+for n = 35:35
 
     % load patient out file 
     patient_file = fullfile(thirdOut_dir, patient_files(n));

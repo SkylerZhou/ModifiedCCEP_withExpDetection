@@ -3,6 +3,8 @@
 % 2. adjust the n1_adj and n2_adj to formulate a new csv
 % output. The peak amp of n1_adj and n2_adj in this version of should only == NaN if its corresponding
 % sig_avg == 1 | pre_thresh == 1 | exp == 1 | ignore_ch ==1 . 
+% 3. check if the ccep performance for this patient in the detector is bad,
+% if bad, do not save it as csv to aviod downstream hypothesis testing.
 % 3. generate csv for python processing
 
 overwrite = 1;
@@ -33,6 +35,7 @@ for n = 1:num_patient
         out = temp.out;
     end
 
+
     %% try add_elecs_distance function; check if there are corresponding
     % coordinate files to build distance matrix for this patient 
     try 
@@ -41,12 +44,23 @@ for n = 1:num_patient
         fprintf('%s\n', ME.message);
     end
     
+
     %% adjust amp and lat to remove those that are rejected for n1&n2 
     out = adjust_network_to_remove_rejects(out); 
 
     % save the patient output file
     out_file_name = patient_files(n);
     save(fullfile(thirdOut_dir, out_file_name), 'out');
+
+
+    %% if patient's ccep output performance is bad (through visual examination), exclude these patients
+    pt_id = out.name;
+    bad_data = ["HUP213", "HUP214", "HUP216", "HUP256", "HUP264", "HUP266", "HUP272", "HUP273"];
+    if any(strcmp(pt_id, bad_data))
+        fprintf('Skipping %s due to poor CCEP performance.\n', pt_id);
+        continue;  % skip to next patient
+    end
+
 
     %% convert to csv for processsing in python
     [T, csv_name] = mat2csv(out, csv_folder);
@@ -63,7 +77,7 @@ end
 % adjust_network_to_remove_reject, and mat2csv functions - break the long
 % func to make it clearer. 
 %{
-%% 原来的代码
+%% old code 
 
 % load directories to loop over patients
 locations = cceps_files;
