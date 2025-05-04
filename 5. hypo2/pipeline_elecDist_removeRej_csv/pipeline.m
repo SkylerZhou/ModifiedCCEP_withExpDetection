@@ -15,7 +15,8 @@ locations = cceps_files;
 data_folder = locations.data_folder;
 ptT = readtable([data_folder,'master_pt_list.xlsx']);
 thirdOut_dir = locations.thirdOut_dir;
-csv_folder = [thirdOut_dir,'third_pipeline_csv_hypo2/'];
+hypo2_dir = [thirdOut_dir,'third_pipeline_hypo2/elecDist/'];
+csv_folder = [hypo2_dir,'csv/'];
 
 num_patient = height(ptT);
 patient_files = string(strcat(ptT.HUPID, '.mat'));
@@ -56,7 +57,7 @@ for n = 1:num_patient
 
     % save the patient output file
     out_file_name = patient_files(n);
-    save(fullfile(thirdOut_dir, out_file_name), 'out');
+    save(fullfile(hypo2_dir, out_file_name), 'out');
 
 
     %% if patient's ccep output performance is bad (through visual examination), exclude these patients

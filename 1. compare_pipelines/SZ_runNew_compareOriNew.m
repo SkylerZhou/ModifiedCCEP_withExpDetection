@@ -30,10 +30,10 @@ end
 
 
 %% loop over patients
-start_patient = 32;
+start_patient = 17;
 num_patient = height(ptT);
 
-for n = start_patient:num_patient
+for n = start_patient:start_patient
 
     patient_file = fullfile(firstOut_dir, patient_files(n));
     out = load(patient_file);
