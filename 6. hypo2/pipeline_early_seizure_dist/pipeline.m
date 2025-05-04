@@ -14,7 +14,7 @@ locations = cceps_files;
 data_folder = locations.data_folder;
 ptT = readtable([data_folder,'master_pt_list.xlsx']);
 thirdOut_dir = locations.thirdOut_dir;
-csv_folder = [thirdOut_dir,'third_pipeline_csv_sz_dist/'];
+csv_folder = [thirdOut_dir,'third_pipeline_hypo2/early_seizure_dist/'];
 
 num_patient = height(ptT);
 patient_files = string(strcat(ptT.HUPID, '.mat'));
@@ -22,7 +22,7 @@ patient_ids = string(ptT.HUPID(1:num_patient));
 
 
 %% loop over patients
-for n = 35:35
+for n = 1:num_patient
 
     % load patient out file 
     patient_file = fullfile(thirdOut_dir, patient_files(n));
@@ -37,7 +37,8 @@ for n = 35:35
     %% try add_elecs_distance function; check if there are corresponding
     % coordinate files to build distance matrix for this patient 
     try 
-        out = add_elecs_distance(out);
+        out = calculate_bipolar_midpoint(out);
+        out = add_bipolar_dist(out);
     catch ME 
         fprintf('%s\n', ME.message);
     end
@@ -46,12 +47,24 @@ for n = 35:35
     %out = adjust_network_to_remove_rejects(out); 
 
     % save the patient output file
-    out_file_name = patient_files(n);
-    save(fullfile(thirdOut_dir, out_file_name), 'out');
+    %out_file_name = patient_files(n);
+    %save(fullfile(thirdOut_dir, out_file_name), 'out');
+
+
+
+    %% if patient's ccep output performance is bad (through visual examination), exclude these patients
+    pt_id = out.name;
+    bad_data = ["HUP213", "HUP214", "HUP216", "HUP256", "HUP264", "HUP266", "HUP272", "HUP273"];
+    if any(strcmp(pt_id, bad_data))
+        fprintf('Skipping %s due to poor CCEP performance.\n', pt_id);
+        continue;  % skip to next patient
+    end
+
 
     %% convert to csv for processsing in python
     [T, csv_name] = mat2csv(out, csv_folder);
     
+
     % save the csv 
     writetable(T, csv_name);
     fprintf('Saved csv for %s', out.name);

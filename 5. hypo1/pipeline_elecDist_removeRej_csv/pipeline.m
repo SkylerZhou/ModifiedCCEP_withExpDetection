@@ -15,8 +15,8 @@ locations = cceps_files;
 data_folder = locations.data_folder;
 ptT = readtable([data_folder,'master_pt_list.xlsx']);
 thirdOut_dir = locations.thirdOut_dir;
-hypo2_dir = [thirdOut_dir,'third_pipeline_hypo2/elecDist/'];
-csv_folder = [hypo2_dir,'csv/'];
+hypo1_dir = [thirdOut_dir,'third_pipeline_hypo1/elecDist/'];
+csv_folder = [hypo1_dir,'csv/'];
 
 num_patient = height(ptT);
 patient_files = string(strcat(ptT.HUPID, '.mat'));
@@ -37,9 +37,9 @@ for n = 1:num_patient
     end
 
     % Remove old field if it exists
-    if isfield(out, 'other') && isfield(out.other, 'elecs_dist')
-        out.other = rmfield(out.other, 'elecs_dist');
-    end
+    %if isfield(out, 'other') && isfield(out.other, 'elecs_dist')
+    %    out.other = rmfield(out.other, 'elecs_dist');
+    %end
 
 
     %% try add_elecs_distance function; check if there are corresponding
@@ -57,7 +57,7 @@ for n = 1:num_patient
 
     % save the patient output file
     out_file_name = patient_files(n);
-    save(fullfile(hypo2_dir, out_file_name), 'out');
+    save(fullfile(hypo1_dir, out_file_name), 'out');
 
 
     %% if patient's ccep output performance is bad (through visual examination), exclude these patients
