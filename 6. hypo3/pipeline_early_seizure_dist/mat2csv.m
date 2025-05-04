@@ -12,12 +12,12 @@ for ich = 1:num_elecs
     %if isempty(out.elecs(ich).arts), continue; end
 
     % if exist distance info, extract n1 amp and lat, and distance
-    if isfield(out.other, 'elecs_dist') 
+    if size(out.other.bipolar_dist) ~= 0
         % cp the distance info as the third column to n1_adj
         %out.elecs(ich).n1_adj(:,3) = out.other.elecs_dist(:,ich);
         % extract n1 amp and lat, and distance
         %n1 = out.elecs(ich).n1_adj;
-        n1 = out.other.elecs_dist(:,ich);
+        n1 = out.other.bipolar_dist(:,ich);
         n1_all = [n1_all; n1];
     %else
         % else extract only n1 amp and lat
