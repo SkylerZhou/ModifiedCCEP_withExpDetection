@@ -1,4 +1,4 @@
-%% covert to csv with columns as patient, stim_channel, response_channel, elecs_dist, n1_amp, n1_lat
+%% covert to csv with columns as patient, stim_channel, response_channel, bipolar_dist, n1_amp, n1_lat
 function [T,csv_name] = mat2csv(out, csv_folder)
 
 %% extract N1, stim, and response channels info 
@@ -12,9 +12,9 @@ for ich = 1:num_elecs
     if isempty(out.elecs(ich).arts), continue; end
 
     % if exist distance info, extract n1 amp and lat, and distance
-    if isfield(out.other, 'elecs_dist') 
+    if isfield(out.other, 'bipolar_dist') 
         % cp the distance info as the thrid column to n1_adj
-        out.elecs(ich).n1_adj(:,3) = out.other.elecs_dist(:,ich);
+        out.elecs(ich).n1_adj(:,3) = out.other.bipolar_dist(:,ich);
         % extract n1 amp and lat, and distance
         n1 = out.elecs(ich).n1_adj;
         n1_all = [n1_all; n1];
@@ -32,9 +32,9 @@ for ich = 1:num_elecs
 end
 
 
-%% create cell arrays containing patient, stim_channel, response_channel, n1_amp, n1_lat, elecs_dist
+%% create cell arrays containing patient, stim_channel, response_channel, n1_amp, n1_lat, bipolar_dist
 num_rows = size(n1_all, 1);
-num_cols = 6; % patient, stim_channel, response_channel, elecs_dist, n1_amp, n1_lat
+num_cols = 6; % patient, stim_channel, response_channel, bipolar_dist, n1_amp, n1_lat
 new_out = cell(num_rows, num_cols);
     
 % add patient id to col 1
@@ -45,18 +45,18 @@ new_out(:,1) = patient_col;
 new_out(:,2) = stim_all;
 new_out(:,3) = resp_all;
 
-% append elecs_dist, n1_amp, n1_lat to col 4 to 6
+% append bipolar_dist, n1_amp, n1_lat to col 4 to 6
 n1_all = num2cell(n1_all);
 if size(n1_all, 2) == 3
     % If distance information is available
     new_out(:,5) = n1_all(:,1); % n1 amp
     new_out(:,6) = n1_all(:,2); % n1 lat
-    new_out(:,4) = n1_all(:,3); % elecs_dist
+    new_out(:,4) = n1_all(:,3); % bipolar_dist
 else
     % If distance information is not available
     new_out(:,5) = n1_all(:,1); % n1 amp
     new_out(:,6) = n1_all(:,2); % n1 lat
-    new_out(:,4) = num2cell(NaN(num_rows,1)); % Placeholder for elecs_dist
+    new_out(:,4) = num2cell(NaN(num_rows,1)); % Placeholder for bipolar_dist
 end
 
 

@@ -23,7 +23,7 @@ patient_ids = string(ptT.HUPID(1:num_patient));
 
 
 %% loop over patients
-for n = 35:35
+for n = 1:num_patient
 
     % load patient out file 
     patient_file = fullfile(thirdOut_dir, patient_files(n));
@@ -35,11 +35,17 @@ for n = 35:35
         out = temp.out;
     end
 
+    % Remove old field if it exists
+    if isfield(out, 'other') && isfield(out.other, 'elecs_dist')
+        out.other = rmfield(out.other, 'elecs_dist');
+    end
+
 
     %% try add_elecs_distance function; check if there are corresponding
     % coordinate files to build distance matrix for this patient 
     try 
-        out = add_elecs_distance(out);
+        out = calculate_bipolar_midpoint(out);
+        out = add_bipolar_dist(out);
     catch ME 
         fprintf('%s\n', ME.message);
     end
