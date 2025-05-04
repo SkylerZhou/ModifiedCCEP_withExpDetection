@@ -1,5 +1,5 @@
 %% this function calculate elucidean distance betwwen electrodes and store the distance matrix as elecs_distance in out.other?
-function out = calculate_interelectrode_dist(out)
+function out = calculate_bipolar_midpoint(out)
 
 % Mount to remote server and define file path
 locations = cceps_files;
@@ -14,7 +14,7 @@ try
     coor_file.name = string(coor_file.labels);  % Convert label column to 'name' for consistency
 catch ME
     fprintf('Error finding the patient electrode coordinates file %s: %s\n', coor_filename, ME.message);
-    out.other.bipolar_ch_xyz = table();  % Return empty table if failed
+    out.other.bipolar_coor = table();  % Return empty table if failed
     return;
 end
 
@@ -24,7 +24,6 @@ bi_elecs = cell2table(out.bipolar_labels, 'VariableNames', {'name'});
 bi_elecs.names = cellfun(@(x) string(x), bi_elecs.name, 'UniformOutput', false);
 catch_idx = cellfun(@(x) isempty(x) || ~ischar(x), bi_elecs.name);
 bi_elecs.names(catch_idx) = {""};
-%bi_elecs.name = string([bi_elecs.names{:}]);
 bi_elecs = removevars(bi_elecs, 'name');
 
 
@@ -63,4 +62,4 @@ out.other.bipolar_coor = table( ...
     bipolar_labels, ...
     bipolar_coords(:,1), bipolar_coords(:,2), bipolar_coords(:,3), ...
     'VariableNames', {'label', 'mm_x', 'mm_y', 'mm_z'});
-end
+
