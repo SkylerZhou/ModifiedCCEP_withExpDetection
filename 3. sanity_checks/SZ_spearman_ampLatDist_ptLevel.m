@@ -1,11 +1,10 @@
 %% calculate spearman correlation between amplitude and electrode distance on the patient level
 
-
 %% prep 
 % load directories to loop over patients
 locations = cceps_files;
 data_folder = locations.data_folder;
-patientNewOut_dir = locations.patientNewOut_dir;
+thirdOut_dir = locations.thirdOut_dir;
 ptT = readtable([data_folder,'master_pt_list.xlsx']);
 
 num_patient = height(ptT);
@@ -27,17 +26,18 @@ all_n2_latDist_corr = nan(1, num_patient);
 for n = 1:num_patient
 
     % load patient out file 
-    patient_file = fullfile(patientNewOut_dir, patient_files(n));
+    patient_file = fullfile(thirdOut_dir, patient_files(n));
     temp = load(patient_file);
     out = temp.out;
     
-    % try add_elecs_distance function; check if there are corresponding
+
+    %% try add_elecs_distance function; check if there are corresponding
     % coordinate files to build distance matrix for this patient 
     try 
-        out = SZ_add_elecs_distance(out);
+        out = calculate_bipolar_midpoint(out);
+        out = add_bipolar_dist(out);
     catch ME 
         fprintf('%s\n', ME.message);
-        continue
     end
     % adjust amp and lat to remove those that are rejected for n1&n2 if not already did in SZ_runNew_compareOriNew.m
     % out = SZ_adjust_network_to_remove_rejects(out); 
@@ -51,18 +51,24 @@ for n = 1:num_patient
 
     for ich = 1:num_elecs
         if isempty(out.elecs(ich).arts), continue; end
-
-        % cp the distance info as the thrid column to n1_adj&n2_adj
-        out.elecs(ich).n1_adj(:,3) = out.other.elecs_dist(:,ich);
-        out.elecs(ich).n2_adj(:,3) = out.other.elecs_dist(:,ich);
+        n_rows = size(out.elecs(ich).n1_adj, 1);
+    
+            if ~isempty(out.other.bipolar_dist)
+                out.elecs(ich).n1_adj(:,3) = out.other.bipolar_dist{:,ich};
+                out.elecs(ich).n2_adj(:,3) = out.other.bipolar_dist{:,ich};
+            else
+                out.elecs(ich).n1_adj(:,3) = NaN(n_rows, 1);
+                out.elecs(ich).n2_adj(:,3) = NaN(n_rows, 1);
+            end
         
-        % store the processed n1_ampLatDist and n2_ampLatDist 
-        n1_ampLatDist = transpose(out.elecs(ich).n1_adj);
-        n2_ampLatDist = transpose(out.elecs(ich).n2_adj);
+            % store the processed n1_ampLatDist and n2_ampLatDist 
+            n1_ampLatDist = transpose(out.elecs(ich).n1_adj);
+            n2_ampLatDist = transpose(out.elecs(ich).n2_adj);
 
-        n1_ampLatDist_all = [n1_ampLatDist_all, n1_ampLatDist];
-        n2_ampLatDist_all = [n2_ampLatDist_all, n2_ampLatDist];        
+            n1_ampLatDist_all = [n1_ampLatDist_all, n1_ampLatDist];
+            n2_ampLatDist_all = [n2_ampLatDist_all, n2_ampLatDist];   
     end
+
 
 
     % calculate correlation between amplitude and latency all N1 and N2 
@@ -114,6 +120,7 @@ disp(['p-value for the one-sample t-test on N2 correlations between latency and 
 %% forest plot
 % has to manually change the following variables to plot for different
 % graphs
+
 %{
 x_label = 'Amplitude and Latency';
 toPlot_n1 = all_n1_ampLat_corr;
@@ -122,6 +129,7 @@ p_n1 = p_n1_ampLat;
 p_n2 = p_n2_ampLat;
 %}
 
+
 x_label = 'Amplitude and Distance';
 toPlot_n1 = all_n1_ampDist_corr;
 toPlot_n2 = all_n2_ampDist_corr;
@@ -129,6 +137,7 @@ p_n1 = p_n1_ampDist;
 p_n2 = p_n2_ampDist;
 
 n1_ampDist_corr_avg = mean(all_n1_ampDist_corr, 'omitmissing');
+%}
 
 %{
 x_label = 'Latency and Distance';
@@ -142,7 +151,9 @@ p_n2 = p_n2_latDist;
 
 %% to plot
 figure;
-tiledlayout(1,1);
+tiledlayout(1,2);  % 1 row, 2 columns
+markerColor = [0 0.4470 0.7410]; % consistent blue tone
+markerEdgeColor = [0.2196, 0.4000, 0.8902];
 %
 
 
@@ -152,7 +163,7 @@ hold on;
 
 for i = 1:num_patient   
     % Plot a marker at the mean
-    plot(toPlot_n1(i), i, 'bo', 'MarkerFaceColor', [0.4660 0.6740 0.1880]);
+    plot(toPlot_n1(i), i, 'o', 'MarkerFaceColor', markerColor, 'MarkerEdgeColor', markerEdgeColor);
 end
 
 % Draw vertical red line at x=0
@@ -164,10 +175,10 @@ ylim([0.5, num_patient + 0.5]);
 set(gca, 'YTick', 1:num_patient, 'YTickLabel', patient_ids);
 ylabel('Patient ID');
 xlabel(sprintf('Correlation between %s', x_label));
-title(sprintf('N1 Spearman Correlations Coefficienet (p-value: %.4e)', p_n1));
+title(sprintf('N1 Spearman Correlations Coefficienet (p-value: %.3e)', p_n1));
 
-txt = sprintf('rho = %f; #pts = 40', n1_ampDist_corr_avg);
-text(0.4,20,txt)
+%txt = sprintf('rho = %f; #pts = 40', n1_ampDist_corr_avg);
+%text(0.4,20,txt)
 
 grid on;
 hold off;
@@ -180,7 +191,7 @@ hold on;
 
 for i = 1:num_patient
     % Plot a marker at the mean
-    plot(toPlot_n2(i), i, 'bo', 'MarkerFaceColor', [0.4660 0.6740 0.1880]);
+    plot(toPlot_n2(i), i,'o', 'MarkerFaceColor', markerColor, 'MarkerEdgeColor', markerEdgeColor);
 end
 
 % Draw vertical red line at x=0
@@ -192,7 +203,7 @@ ylim([0.5, num_patient + 0.5]);
 set(gca, 'YTick', 1:num_patient, 'YTickLabel', patient_ids);
 ylabel('Patient ID');
 xlabel(sprintf('Correlation between %s', x_label));
-title(sprintf('N2 Spearman Correlations Coefficient (p-value: %.4e)', p_n2));
+title(sprintf('N2 Spearman Correlations Coefficient (p-value: %.3e)', p_n2));
 
 grid on;
 hold off;
@@ -226,13 +237,13 @@ for n = num_patient:num_patient
     temp = load(patient_file);
     out = temp.new_out;
 
-    % try add_elecs_distance function; check if there are corresponding
+    %% try add_elecs_distance function; check if there are corresponding
     % coordinate files to build distance matrix for this patient 
     try 
-        out = SZ_add_elecs_distance(out);
+        out = calculate_bipolar_midpoint(out);
+        out = add_bipolar_dist(out);
     catch ME 
         fprintf('%s\n', ME.message);
-        continue
     end
     % adjust amp and lat to remove those that are rejected for n1&n2 
     out = SZ_adjust_network_to_remove_rejects(out); 
@@ -248,8 +259,8 @@ for n = num_patient:num_patient
         if isempty(out.elecs(ich).arts), continue; end
 
         % cp the distance info as the thrid column to n1_adj&n2_adj
-        out.elecs(ich).n1_adj(:,3) = out.other.elecs_dist(:,ich);
-        out.elecs(ich).n2_adj(:,3) = out.other.elecs_dist(:,ich);
+        out.elecs(ich).n1_adj(:,3) = out.other.bipolar_dist(:,ich);
+        out.elecs(ich).n2_adj(:,3) = out.other.bipolar_dist(:,ich);
 
         n1_latDist = out.elecs(ich).n1_adj(:,[2,3]);
         n2_latDist = out.elecs(ich).n2_adj(:,[2,3]);
