@@ -40,7 +40,7 @@ for n = 1:num_patient
         fprintf('%s\n', ME.message);
     end
     % adjust amp and lat to remove those that are rejected for n1&n2 if not already did in SZ_runNew_compareOriNew.m
-    % out = SZ_adjust_network_to_remove_rejects(out); 
+    out = SZ_adjust_network_to_remove_rejects(out); 
 
 
     % to store amp and lat across all electrodes for each patient 
@@ -129,7 +129,7 @@ p_n1 = p_n1_ampLat;
 p_n2 = p_n2_ampLat;
 %}
 
-
+%{
 x_label = 'Amplitude and Distance';
 toPlot_n1 = all_n1_ampDist_corr;
 toPlot_n2 = all_n2_ampDist_corr;
@@ -139,7 +139,7 @@ p_n2 = p_n2_ampDist;
 n1_ampDist_corr_avg = mean(all_n1_ampDist_corr, 'omitmissing');
 %}
 
-%{
+
 x_label = 'Latency and Distance';
 toPlot_n1 = all_n1_latDist_corr;
 toPlot_n2 = all_n2_latDist_corr;

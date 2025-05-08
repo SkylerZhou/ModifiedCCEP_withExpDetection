@@ -1,4 +1,6 @@
 %% Aim: for the rejected signal, replace amplitude and latencies of N1 and N2 with NaN. 
+% note this func is different from it in sanity check, it had removed only
+% the artifacts but had retained the signal with amplitude <= 4.5
 function out = adjust_network_to_remove_rejects(out)
 
 
@@ -30,7 +32,7 @@ for j = 1:2
     pre_thresh = out.rejection_details(which_n).reject.pre_thresh;
     exp = out.rejection_details(which_n).reject.exp;
     ignore_ch = out.rejection_details(which_n).reject.ignore_ch;
-    good = (sig_avg ~= 1) & (pre_thresh ~= 1) & (exp ~= 1) & (ignore_ch ~= 1);
+    good = (sig_avg ~= 1) & (pre_thresh ~= 1) & (exp ~= 1) & (ignore_ch ~= 1); % note that we did not include at_thresh so <= 4.5 is not filtered out
 
     %% leave stim-resp peak amp to nan if not in good 
     good_indices = find(good==1);

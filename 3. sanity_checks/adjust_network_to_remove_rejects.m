@@ -36,7 +36,7 @@ for j = 1:2
     sig_avg = out.rejection_details(which_n).reject.sig_avg;
     pre_thresh = out.rejection_details(which_n).reject.pre_thresh;
     at_thresh = out.rejection_details(which_n).reject.at_thresh;
-    keep = out.rejection_details(which_n).reject.keep;
+    keep = out.rejection_details(which_n).reject.keep; % keep should be complimentary to any_reject 
     exp = out.rejection_details(which_n).reject.exp;
     ignore_ch = out.rejection_details(which_n).reject.ignore_ch;
 
