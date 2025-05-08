@@ -19,7 +19,7 @@ locations.mount_dir = '/Volumes/USERS/skylerz/coor_data/coor_files/'; % elec dis
 % dir to OUTPUT for 3rd version
 %locations.patientNewOut = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP/ccep_result/new_pipeline_keptonly';
 % patientNewOut
-locations.thirdOut_dir = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP_ExpDetection/ccep_result/third_pipeline_threshAmp4.5/';
+locations.thirdOut_dir = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP_ExpDetection/ccep_result/third_pipeline_threshAmp6.0/';
 % locations.thirdOut_dir = '/Users/zhouzican/Documents/MATLAB/master_thesis/CCEP_ExpDetection/ccep_result/third_pipeline';
 
 % files containing electrodes distance info
