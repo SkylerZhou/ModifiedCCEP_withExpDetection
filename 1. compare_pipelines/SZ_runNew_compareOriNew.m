@@ -30,21 +30,22 @@ end
 
 
 %% loop over patients
-start_patient = 17;
+start_patient = 1;
 num_patient = height(ptT);
 
-for n = start_patient:start_patient
+%for n = start_patient:num_patient
+for n = 59:59
 
     patient_file = fullfile(firstOut_dir, patient_files(n));
     out = load(patient_file);
     ori_out = out.pt_out;
 
     % run single out file 
-    new_out = RW_alternative_filtering(ori_out); % all 0
-    new_out = RW_Running_RejectOrKeep(new_out); % all 0
-    new_out = RW_new_build_network(new_out); % starts to have 1 
+    new_out = RW_alternative_filtering(ori_out); 
+    new_out = RW_Running_RejectOrKeep(new_out); 
+    new_out = RW_new_build_network(new_out); 
     %new_out = RW_require_both_Ns(new_out);
-    %new_out = SZ_adjust_network_to_remove_rejects(new_out); 
+    new_out = adjust_network_to_remove_rejects(new_out); 
 
     % save the patient output file
     out_file_name = patient_files(n);
